@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import postsReducer from './postsReducer';
-import isLoadingPostReducer from './isLoadingPostReducer';
+import userReducer from './userReducer';
 
 const rootReducer = combineReducers({
     posts: postsReducer,
-    isLoadingPost: isLoadingPostReducer
+    user: userReducer
 });
 
 export default rootReducer;

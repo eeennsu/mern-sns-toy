@@ -4,6 +4,8 @@ export const UPDATE_POST = 'UPDATE_POST' as const;
 export const CHANGE_POST_ID_AT_FORM = 'CHANGE_POST_ID_AT_FORM' as const;
 export const DELETE_POST = 'DELETE_POST' as const;
 export const PLUS_LIKE_POST = 'PLUS_LIKE_POST' as const;
+export const IS_LOADING_API_POST = 'IS_LOADING_API_POST' as const;
+export const SELECT_POST_ID = 'SELECT_POST_ID' as const;
 
 type GetAllPostAction = {
     type: typeof GET_ALL_POSTS;
@@ -36,4 +38,14 @@ type PlusPostLikeAction = {
     };            // post
 }
 
-export type PostsAction = GetAllPostAction | CreatePostAction | UpdatePostAction | DeletePostAction | PlusPostLikeAction;
+type IsLoadingAPIPostAction = {
+    type: typeof IS_LOADING_API_POST;
+    payload: boolean;
+}
+
+type SelectPostAction = {
+    type: typeof SELECT_POST_ID;
+    payload?: string  // id
+}
+
+export type PostsAction = GetAllPostAction | CreatePostAction | UpdatePostAction | DeletePostAction | PlusPostLikeAction | IsLoadingAPIPostAction | SelectPostAction;

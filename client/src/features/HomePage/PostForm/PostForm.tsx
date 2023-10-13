@@ -7,11 +7,6 @@ import { message as antdMessage } from 'antd';
 import { getOnePost_API, updatePost_API } from '../../../api/apis';
 import { Spin } from '../../../components';
 
-type Props = {
-    curPostId: string | null;
-    setCurPostId: Dispatch<SetStateAction<string | null>>;
-}
-
 const initForm: PostFormData = {
     title: '',
     creator: '',
@@ -20,11 +15,10 @@ const initForm: PostFormData = {
     tags: [], 
 }
 
-const Form: FC<Props> = ({ curPostId, setCurPostId }) => {
+const Form: FC = () => {
 
     const dispatch = useAppDispatch();
-    const post = useAppSelector(state => curPostId ? state.posts.find(post => post._id === curPostId) : null);
-
+    const selectedPost = useAppSelector(state => state.posts.selectedPost);
     const [formData, setFormData] = useState<PostFormData>(initForm);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -40,14 +34,20 @@ const Form: FC<Props> = ({ curPostId, setCurPostId }) => {
             return;
         }
 
+        if (!tags.includes('#')) {
+            antdMessage.error('Tags need #...');
+            dispatch({ type: 'IS_LOADING_API_POST', payload: false });
+            return 
+        }
+
         if (typeof tags === 'string') {
             const seperatedTags = tags.split('#').splice(1, tags.length);
             formData.tags = seperatedTags;
         }
 
         // 만약 가지고 있다면 포스트를 수정한다는 뜻
-        if (curPostId) {
-            const updatePostDispatch = updatePost(curPostId, formData);
+        if (selectedPost) {
+            const updatePostDispatch = updatePost(selectedPost._id, formData);
             
             await updatePostDispatch(dispatch); 
             antdMessage.success('updated!!');
@@ -76,12 +76,11 @@ const Form: FC<Props> = ({ curPostId, setCurPostId }) => {
 
     const handleFormReset = () => {
         setFormData(initForm);
-        setCurPostId(null);
+        dispatch({ type: 'SELECT_POST_ID', payload: undefined });
     }
 
     useEffect(() => {
-        if (curPostId) {        
-            
+        if (selectedPost) {        
             // 하나의 id로 서버 api를 통해 가져오는 방법이지만, 기존 state 배열에서 index를 찾아 가져오는 방법이 더 빠르긴하다.
             // (async () => {
             //     const { data } = await getOnePost_API(curPostId);
@@ -98,22 +97,22 @@ const Form: FC<Props> = ({ curPostId, setCurPostId }) => {
                 
             // })();
 
-            const tags = post?.tags as string[]; 
+            const tags = selectedPost?.tags as string[]; 
        
             setFormData({
-                creator: post!.creator,
-                title: post!.title,
-                message: post!.message,
-                tags: tags.length === 1 ? `#${post!.tags}` : tags.map((tag) => `#${tag}`).join(''),
-                selectedFile: post!.selectedFile
+                creator: selectedPost!.creator,
+                title: selectedPost!.title,
+                message: selectedPost!.message,
+                tags: tags.length === 1 ? `#${selectedPost!.tags}` : tags.map((tag) => `#${tag}`).join(''),
+                selectedFile: selectedPost!.selectedFile
             });
         }
-    }, [curPostId]);
+    }, [selectedPost]);
 
     return (
         <aside className='relative flex flex-col justify-center h-full p-4 mt-8 transition duration-500 bg-white rounded-sm shadow-2xl md:mt-0 ites-center hover:-translate-y-3'>
             <h2 className='py-2 text-xl font-bold text-black'>
-                {curPostId ? 'Updating your memory' : 'Creating your Memory'}
+                {selectedPost ? 'Updating your memory' : 'Creating your Memory'}
             </h2>
             <form className='flex flex-col gap-4 mt-2' autoComplete='off' noValidate onSubmit={handleSubmit}>
                 <div>
@@ -137,8 +136,8 @@ const Form: FC<Props> = ({ curPostId, setCurPostId }) => {
                     {/* files <input name='selectedFile' type='file' onChange={handleFileChange} multiple={false} accept='accept="image/jpg, image/png, image/jpeg"' /> */}
                 </div>
                 <div>
-                    <button type='submit' className={`w-full px-3 py-2 text-sm text-white uppercase ${curPostId ? 'bg-green-600' : 'bg-blue-800'} rounded-sm shadow-lg let`}>
-                        {curPostId ? 'update' : 'create'}
+                    <button type='submit' className={`w-full px-3 py-2 text-sm text-white uppercase ${selectedPost ? 'bg-green-600' : 'bg-blue-800'} rounded-sm shadow-lg let`}>
+                        {selectedPost ? 'update' : 'create'}
                     </button>
                 </div>   
                 <div>

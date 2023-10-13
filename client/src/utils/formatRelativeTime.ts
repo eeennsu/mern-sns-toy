@@ -1,5 +1,5 @@
 const formatRelativeTime = (date1: Date, date2: Date = new Date()): string => {
-    
+
     if (!date1) {
         return '';
     }
