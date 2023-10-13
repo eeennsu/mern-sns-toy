@@ -1,0 +1,22 @@
+import mongoose from 'mongoose';
+
+// 데이터 형태에 대한 타입 세팅
+const postSchema = mongoose.Schema({
+    title: String,
+    message: String,
+    creator: String,
+    tags: [String],
+    selectedFile: String,        // 이미지를 문자열로 변환할 예정
+    likeCount: {
+        type: Number,
+        default: 0
+    },
+    createdAt: {
+        type: Date,
+        default: new Date()
+    }
+})
+
+const PostMessage = mongoose.model('PostMessage', postSchema);
+
+export default PostMessage;
