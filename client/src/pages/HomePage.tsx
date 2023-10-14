@@ -3,8 +3,7 @@ import { useAppDispatch, useAppSelector } from '../redux/actionTypes';
 import { useEffect } from 'react';
 import { getAllPosts } from '../actions/posts';
 import { Spin } from '../components';
-import SignInPlease from '../features/HomePage/PostForm/SignInPlease';
-import { PostForm, Posts } from '../features';
+import { LoginPlease, PostForm, Posts } from '../features';
 
 const HomePage: FC = () => {
 
@@ -36,7 +35,7 @@ const HomePage: FC = () => {
                 isLogin ? (
                     <PostForm />                            
                 ) : (
-                    <SignInPlease />
+                    <LoginPlease />
                 )
             }                 
         </section>    

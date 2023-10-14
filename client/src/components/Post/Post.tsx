@@ -40,7 +40,7 @@ const Post: FC<Props> = ({ post }) => {
     const handleEdit = () => {
         if (!isLoginCheck()) return;
 
-        dispatch({ type: 'SELECT_POST_ID', payload: post._id })
+        dispatch({ type: '', payload: post._id })
     }
 
     const handleDelete = async () => {

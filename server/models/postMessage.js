@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 // 데이터 형태에 대한 타입 세팅
-const postSchema = mongoose.Schema({
+const postMessageSchema = mongoose.Schema({
     title: String,
     message: String,
     creator: String,
@@ -17,6 +17,6 @@ const postSchema = mongoose.Schema({
     }
 })
 
-const PostMessage = mongoose.model('PostMessage', postSchema);
+const PostMessage = mongoose.model('PostMessage', postMessageSchema);
 
 export default PostMessage;

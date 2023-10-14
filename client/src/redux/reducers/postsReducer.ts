@@ -16,14 +16,12 @@ const postsReducer = (state: PostsStateType = initialState, { type, payload }: P
 
     switch(type) {
         case 'GET_ALL_POSTS': 
-
             return {
                 ...state,
                 posts: payload
             };
         
         case 'CREATE_POST':
-
             return {
                 ...state,
                 posts: [...state.posts , payload]
@@ -47,7 +45,6 @@ const postsReducer = (state: PostsStateType = initialState, { type, payload }: P
             };
         
         case 'DELETE_POST': 
-
             return {
                 ...state,
                 posts: state.posts.filter((post) => post._id !== payload)   // id와 같은것을 거르기
@@ -55,25 +52,23 @@ const postsReducer = (state: PostsStateType = initialState, { type, payload }: P
 
             // 전달받은 것으로 교체v
         case 'PLUS_LIKE_POST': 
-
             return {
                 ...state,
                 posts: state.posts.map((post) => post._id === payload.id ? payload.post : post)
             };
 
         case 'IS_LOADING_API_POST' : 
-
             return {
                 ...state,
                 isLoadingPost: payload               // payload에는 triigger 
             }
 
-        case 'SELECT_POST_ID': 
-        
+        case 'SELECT_POST_ID':         
             return {
                 ...state,
                 selectedPost: state.posts.find((post) => post._id === payload)
             }
+            
         default: 
             return state;
     }

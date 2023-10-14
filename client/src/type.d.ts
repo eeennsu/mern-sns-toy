@@ -11,3 +11,8 @@ type Post = PostFormData & {
     likeCount: number;
     createdAt: Date | string;
 }
+
+type UserFormType = {
+    user_email: string;
+    user_pw: string;
+}

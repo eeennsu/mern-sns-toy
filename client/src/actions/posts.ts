@@ -1,9 +1,8 @@
-import { createPost_API, deletePost_API, getPosts_API, plusLikePost_API, updatePost_API } from '../api/apis';
+import { createPost_API, deletePost_API, getPosts_API, plusLikePost_API, updatePost_API } from '../api/postsApis';
 import { RootDispatch } from '../redux/actionTypes'; 
 
 // 액션생성자는 액션을 반환하는 함수이다
 export const getAllPosts = () => async (dispatch: RootDispatch) => {
-    
     try {
         const { data } = await getPosts_API();
         dispatch({ type: 'GET_ALL_POSTS', payload: data });
@@ -14,7 +13,6 @@ export const getAllPosts = () => async (dispatch: RootDispatch) => {
 }   
 
 export const createPost = (post: PostFormData) => async (dispatch: RootDispatch) => {
-
     try {
         const { data } = await createPost_API(post);
         dispatch({ type: 'CREATE_POST', payload: data });
@@ -25,7 +23,6 @@ export const createPost = (post: PostFormData) => async (dispatch: RootDispatch)
 }
 
 export const updatePost = (id: string, updatedForm: PostFormData) => async (dispatch: RootDispatch) => {
-
     try {
         const { data } = await updatePost_API(id, updatedForm);
         console.log(data);
@@ -36,7 +33,6 @@ export const updatePost = (id: string, updatedForm: PostFormData) => async (disp
 }
 
 export const deletePost = (id: string) => async (dispatch: RootDispatch) => {
-
     try {
         await deletePost_API(id);
 
@@ -47,7 +43,6 @@ export const deletePost = (id: string) => async (dispatch: RootDispatch) => {
 }
 
 export const plusLiketPost = (id: string) => async (dispatch: RootDispatch) => {
-    
     try {
         const { data } = await plusLikePost_API(id);
 

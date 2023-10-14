@@ -4,7 +4,7 @@ import FileBase from 'react-file-base64';
 import { useAppDispatch, useAppSelector } from '../../../redux/actionTypes';
 import { createPost, updatePost } from '../../../actions/posts';
 import { message as antdMessage } from 'antd';
-import { getOnePost_API, updatePost_API } from '../../../api/apis';
+import { getOnePost_API, updatePost_API } from '../../../api/postsApis';
 import { Spin } from '../../../components';
 
 const initForm: PostFormData = {
@@ -76,7 +76,7 @@ const Form: FC = () => {
 
     const handleFormReset = () => {
         setFormData(initForm);
-        dispatch({ type: 'SELECT_POST_ID', payload: undefined });
+        dispatch({ type: 'SELECT_POST_ID', payload: null });
     }
 
     useEffect(() => {

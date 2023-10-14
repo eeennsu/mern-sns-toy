@@ -45,7 +45,7 @@ type IsLoadingAPIPostAction = {
 
 type SelectPostAction = {
     type: typeof SELECT_POST_ID;
-    payload?: string  // id
+    payload: string | null  // id
 }
 
 export type PostsAction = GetAllPostAction | CreatePostAction | UpdatePostAction | DeletePostAction | PlusPostLikeAction | IsLoadingAPIPostAction | SelectPostAction;
