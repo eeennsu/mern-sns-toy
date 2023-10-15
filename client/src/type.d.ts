@@ -1,18 +1,45 @@
 type PostFormData = {
     title: string;
     message: string;
-    creator: string;
     tags: string[] | string;
     selectedFile: string;
 }
 
 type Post = PostFormData & {
     _id: string;
-    likeCount: number;
+    creator: string;
+    likes: string[];
     createdAt: Date | string;
 }
 
-type UserFormType = {
-    user_email: string;
-    user_pw: string;
+type UserLoginFormType = {
+    email: string;
+    password: string;
+}
+
+type UserSignUpFormType =  & {
+    firstName: string;
+    lastName: string;
+    emailID: string;
+    emailDomain: string;
+    password: string;
+    repeatPassword: string;
+    termsCheck: boolean;
+}
+
+type RequestSignUpUserType = {
+    name: string;
+    email: string;
+    password: string
+}
+
+type GoogleUserInfo = {
+    email: string;
+    email_verified: boolean;
+    family_name: string;
+    given_name: string;
+    locale: string;
+    name: string;
+    picture: string;
+    sub: string;
 }

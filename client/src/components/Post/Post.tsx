@@ -6,6 +6,8 @@ import formatRelativeTime from '../../utils/formatRelativeTime';
 import { useMemo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/actionTypes';
 import { deletePost, plusLiketPost } from '../../actions/posts';
+import { shallowEqual } from 'react-redux';
+import { memo } from 'react';
 
 type Props = {
     post: Post;
@@ -16,11 +18,18 @@ const colors = ['blue', 'cyan', 'gold', 'magenta', 'geekblue', 'green'];
 const Post: FC<Props> = ({ post }) => {
     
     const dispatch = useAppDispatch();
-    const isLogin = useAppSelector(state => state.user.isLogin);
-    
+    const { isLogin, email, googleResponse } = useAppSelector(state => ({
+        isLogin: state.user.isLogin,
+        email: state.user.email,
+        googleResponse: state.user.googleResponse
+    }), shallowEqual);
+
     const tags = post.tags as string[];
+    
     const [isLikeLoading, setIsLikeLoading] = useState<boolean>();
     const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>();
+    const [isLikedUser, setIsLieUser] = useState<boolean>(Boolean(post.likes.find((likedUserEmail) => likedUserEmail === (email || googleResponse))));
+    const isCurrentUserPost = email === post.creator;
 
     const relativeTimeFormat: string = useMemo(
         () => formatRelativeTime(new Date(post.createdAt)), 
@@ -34,13 +43,14 @@ const Post: FC<Props> = ({ post }) => {
         const updatePostDispatch = plusLiketPost(post._id);
 
         await updatePostDispatch(dispatch);
+        setIsLieUser(prev => !prev);
         setIsLikeLoading(false);
     }
 
     const handleEdit = () => {
         if (!isLoginCheck()) return;
 
-        dispatch({ type: '', payload: post._id })
+        dispatch({ type: 'SELECT_POST_ID', payload: post._id })
     }
 
     const handleDelete = async () => {
@@ -70,9 +80,9 @@ const Post: FC<Props> = ({ post }) => {
                         <p className='font-bold text-white top-5 left-5'>
                             {post.creator}
                         </p>
-                        <div onClick={handleEdit} className='flex items-center justify-center transition-colors rounded-full w-7 h-7 hover:bg-white/10'>
+                        <button onClick={handleEdit} disabled={!(isLogin && isCurrentUserPost)} className={`${(isLogin && isCurrentUserPost) ? 'flex' : 'hidden'} items-center justify-center transition-colors rounded-full w-7 h-7 hover:bg-white/10`}>
                             <IoMdMore className='text-white'/>
-                        </div>
+                        </button>
                     </div>
                     <div className='text-xs text-white'>
                         {relativeTimeFormat}
@@ -94,22 +104,22 @@ const Post: FC<Props> = ({ post }) => {
                 <h2 className="text-2xl font-bold capitalize text-slate-800 space">
                     {post.title}                   
                 </h2>
-                <p className='mt-5 text-sm text-gray-500 line-clamp-3 text-slate min-h-16'>
+                <p className='mt-5 text-sm text-gray-500 line-clamp-3 text-slate min-h-[88px]'>
                     {post.message} 
                 </p>
                 <div className='flex justify-between mt-4 mb-1.5'>
                     <div>
-                        <button onClick={handleLike} className={`flex items-center justify-center gap-1 ${isLogin ? 'text-blue-500' : 'text-gray-400'} px-2.5 py-1.5 ${isLogin && 'transition-colors duration-200 active:bg-gray-400/50 hover:bg-gray-400/25 hover:text-blue-800'} rounded-3xl `}>
+                        <button onClick={handleLike} className={`flex items-center justify-center gap-1 ${(isLogin && isLikedUser) ? 'text-blue-500' : 'text-gray-400'} px-2.5 py-1.5 ${(isLogin && isLikedUser) && 'transition-colors duration-200 active:bg-gray-400/50 hover:bg-gray-400/25 hover:text-blue-800'} rounded-3xl `}>
                             <BiSolidLike />
                             <span className='w-full'>
                                 {
-                                    isLikeLoading ? 'loading...' : `Like ${post.likeCount}`
+                                    isLikeLoading ? 'loading...' : `Like ${post.likes.length}`
                                 }
                             </span> 
                         </button>                                        
                     </div>
-                    <div className={`${isLogin ? 'block' : 'hidden'}`}>
-                        <button onClick={handleDelete} className='flex w-[98px] items-center justify-center gap-1 px-2.5 py-1.5 text-red-400 transition-colors duration-200 active:bg-gray-400/50 hover:bg-gray-400/25 rounded-3xl'>
+                    <div className={`${(isLogin && isCurrentUserPost) ? 'block' : 'hidden'}`}>
+                        <button onClick={handleDelete} disabled={!isCurrentUserPost} className={`flex w-[98px] items-center justify-center gap-1 px-2.5 py-1.5 text-red-400 transition-colors duration-200 active:bg-gray-400/50 hover:bg-gray-400/25 rounded-3xl`}>
                             <BiTrash />
                             <span className='w-full'>
                                 {

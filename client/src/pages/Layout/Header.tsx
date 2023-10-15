@@ -3,10 +3,12 @@ import { trip } from '../../assets/images';
 import { AiOutlineLogout, AiOutlineUser } from 'react-icons/ai';
 import { useAppDispatch, useAppSelector } from '../../redux/actionTypes';
 import { Button, OutlineButton } from '../../components/index';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Avatar, message } from 'antd';
 import { shallowEqual } from 'react-redux';
 import { userLogout } from '../../actions/user';
+import decode from 'jwt-decode';
+import { useEffect } from 'react';
 
 const Header: FC = () => {
 
@@ -17,6 +19,7 @@ const Header: FC = () => {
         email: state.user.email,
         imgUrl: state.user.imgUrl
     }), shallowEqual);
+    const location = useLocation();
 
     const navigate = useNavigate();
 
@@ -35,6 +38,29 @@ const Header: FC = () => {
         navigate('/', { replace: true });
         message.success('logout success');
     }
+
+    useEffect(() => {
+        const profile = localStorage.getItem('profile');
+
+        if (profile) {
+            const token = JSON.parse(profile)?.token;
+            
+
+            // 일단 현재 일반 로그인일 경우
+            if (token) {
+                const decodedToken: any = decode<string>(token);
+
+                if (decodedToken.exp * 1000 < new Date().getTime()) {
+                    handleLogout();
+                }
+            }      
+            
+            // 구글 로그인일 경우
+            else {
+
+            }
+        }
+    }, [location]);
 
     return (
         <header className='sticky z-20 flex items-center justify-between px-8 py-1 bg-white shadow-lg top-10 md:py-2 md:px-12 rounded-xl'>

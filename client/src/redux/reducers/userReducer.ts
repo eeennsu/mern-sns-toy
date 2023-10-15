@@ -6,7 +6,8 @@ type UserStateType = {
     role: Role;
     email: string | null;
     imgUrl: string | null;
-    googleResponse: CodeResponse | null
+    googleResponse: CodeResponse | null,
+    token: string | null;
 }
 
 const initialState: UserStateType = {
@@ -15,29 +16,33 @@ const initialState: UserStateType = {
     email: null,
     imgUrl: null,
     googleResponse: null,
+    token: null
 };
 
 const userReducer = (state: UserStateType = initialState, { type, payload }: UserAction): UserStateType => {
 
     switch(type) {
-        case 'SET_LOGIN_USER': 
-            localStorage.setItem('userGoogleData', JSON.stringify(payload.googleResponse));
+        case 'SET_LOGIN_USER':             
             return {
+                ...state,
                 isLogin: true,              
                 role: payload.role,
                 email: payload.email,
                 imgUrl: payload.imgUrl,
-                googleResponse: payload.googleResponse
+                googleResponse: payload.googleResponse,
+                token: payload.token
             };
 
         case 'SET_LOGOUT_USER':    
-            localStorage.removeItem('userGoogleData');     
+        
             return {
+                ...state,
                 isLogin: false,
                 email: null,
                 role: null,
                 imgUrl: null,
-                googleResponse: null
+                googleResponse: null,
+                token: null
             };
 
         default: 

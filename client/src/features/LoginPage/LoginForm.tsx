@@ -3,42 +3,52 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { Input, message } from 'antd';
 import { AiOutlineGooglePlus } from 'react-icons/ai';
 import { Button, OutlineButton } from '../../components/index';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { GoogleLogin, CredentialResponse, useGoogleLogin, CodeResponse } from '@react-oauth/google';
 import { useAppDispatch } from '../../redux/actionTypes';
-import { userLogin } from '../../actions/user';
+import { userGoogleLogin, userNormalLogin } from '../../actions/user';
+import { useEffect } from 'react';
 
 const LoginForm: FC = () => {
 
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { handleSubmit, formState: { errors }, control, getValues } = useForm<UserFormType>();
-    const onSubmit: SubmitHandler<UserFormType> = (data) => {
-        console.log(data);
+    const location = useLocation();
+    const dispatch = useAppDispatch();
+    const { handleSubmit, formState: { errors }, control, getValues, setValue } = useForm<UserLoginFormType>();
+    const onSubmit: SubmitHandler<UserLoginFormType> = async (userData) => {
+        const loginDispatch = userNormalLogin(userData);
+        await loginDispatch(dispatch);
+        
+        loginSuc();
     }
+
+    const locationState = location.state;
+
+    useEffect(() => {
+        // 방금 회원가입에 성공한 유저라면? 이메일 자동완성
+        if (locationState?.signUpedEmail) {
+            setValue('email', locationState.signUpedEmail);
+        }
+    }, [locationState]);
 
     const handleGoogleLogin = useGoogleLogin({
         scope: 'email profile',
         onSuccess: async (response) => {
-            handleLogin(response);
+            console.log(response);
+            const googleLoginDispatch = userGoogleLogin(response);
+            await googleLoginDispatch(dispatch);
+            
+            loginSuc();
         },
         onError: (errorResponse) => {
             console.log(errorResponse);
             message.error('Google login failed');
         },
-        flow: 'auth-code'
+        flow: 'implicit'
     });
 
-    const handleLogin = async (response: CodeResponse | null = null) => {
-        const userData: UserFormType = {
-            user_email: getValues('user_email'),
-            user_pw:  getValues('user_pw')
-        };
-
-        const loginDispatch = userLogin(userData, response);
-        await loginDispatch(dispatch);
-        
+    const loginSuc = () => {
         message.success('User logged in successfully');
         navigate('/');
     }
@@ -49,7 +59,7 @@ const LoginForm: FC = () => {
                 <div className='w-full'>
                     <div className='max-w-xs mx-auto'>
                         <Controller 
-                            name='user_email' 
+                            name='email' 
                             control={control} 
                             rules={{ 
                                 required: true,
@@ -66,9 +76,9 @@ const LoginForm: FC = () => {
                         />
                         <p className='h-6 text-xs font-semibold text-left text-red-600'>
                             {
-                                errors.user_email?.type === 'required' ? (
+                                errors.email?.type === 'required' ? (
                                     'email is required.'
-                                ) : errors.user_email?.type === 'pattern' ? (
+                                ) : errors.email?.type === 'pattern' ? (
                                     'email is not valid.'
                                 ) : ''
                             }
@@ -78,7 +88,7 @@ const LoginForm: FC = () => {
                 <div className='w-full'>
                     <div className='max-w-xs mx-auto'>
                         <Controller 
-                            name='user_pw' 
+                            name='password' 
                             control={control}
                             rules={{ 
                                 required: true,
@@ -96,9 +106,9 @@ const LoginForm: FC = () => {
                         />  
                         <p className='h-6 text-xs font-semibold text-left text-red-600'>
                             {
-                                errors.user_pw?.type === 'required' ? (
+                                errors.password?.type === 'required' ? (
                                     'password is required.'
-                                ) : errors.user_pw?.type === 'pattern' ? (
+                                ) : errors.password?.type === 'pattern' ? (
                                     'Please enter at least 9 digits or English.'
                                 ) : ''
                             }

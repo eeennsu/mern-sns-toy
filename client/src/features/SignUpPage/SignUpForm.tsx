@@ -3,32 +3,33 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { Checkbox, Input, Select, message } from 'antd';
 import { Button, OutlineButton } from '../../components/index';
 import { AiOutlineGooglePlus } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { emailSelectOptions } from '../../constants/SignUpPage';
-
-type UserFormType = {
-    user_first_name: string;
-    user_last_name: string;
-    user_email: string;
-    email_domain: string;
-    user_pw: string;
-    user_pw_match: string;
-    terms_check: boolean;
-}
+import { signUp_API } from '../../api/userApis';
 
 const SignUpForm: FC = () => {
 
-    const { handleSubmit, formState: { errors }, control, watch } = useForm<UserFormType>();
-    const onSubmit: SubmitHandler<UserFormType> = (data) => {
-        if (!data.terms_check) {
+    const navigate = useNavigate();
+    const { handleSubmit, formState: { errors }, control, watch } = useForm<UserSignUpFormType>();
+    const onSubmit: SubmitHandler<UserSignUpFormType> = async (signUpFormData) => {
+        if (!signUpFormData.termsCheck) {
             message.error('Terms and Conditions are must be checked.');
             return;
         }
+
+        const userData: RequestSignUpUserType = {
+            name: `${signUpFormData.firstName} ${signUpFormData.lastName}`,
+            email: `${signUpFormData.emailID}@${signUpFormData.emailDomain}`,
+            password: signUpFormData.password
+        }
         
-        console.log(data);
+        const { data } = await signUp_API(userData); 
+
+        message.success('User signed up successfully!');
+        navigate('/login', { replace: true, state: { signUpedEmail: data.email  } });
     }
     
-    const watchedUserPassword = watch('user_pw');
+    const watchedUserPassword = watch('password');
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col mt-3'>
@@ -36,7 +37,7 @@ const SignUpForm: FC = () => {
                 <div className='max-w-xs mx-auto'>
                     <div className='flex gap-4'>
                         <Controller 
-                            name='user_first_name' 
+                            name='firstName' 
                             control={control} 
                             rules={{ 
                                 required: true,                                     
@@ -50,7 +51,7 @@ const SignUpForm: FC = () => {
                             )}
                         />
                         <Controller 
-                            name='user_last_name' 
+                            name='lastName' 
                             control={control} 
                             rules={{ 
                                 required: true,     
@@ -66,11 +67,11 @@ const SignUpForm: FC = () => {
                     </div>                    
                     <p className='h-6 text-xs font-semibold text-left text-red-600'>
                         {
-                            errors.user_first_name?.type === 'required' && errors.user_last_name?.type === 'required' ? (
+                            errors.firstName?.type === 'required' && errors.lastName?.type === 'required' ? (
                                 'First name and last name are required.'
-                            ) : errors.user_first_name?.type === 'required' ? (
+                            ) : errors.firstName?.type === 'required' ? (
                                 'First name is required.'
-                            ) : errors.user_last_name?.type === 'required' && (
+                            ) : errors.lastName?.type === 'required' && (
                                 'Last name is required.'
                             )
                         }
@@ -80,7 +81,7 @@ const SignUpForm: FC = () => {
             <div className='w-full'>
                 <div className='grid max-w-xs grid-cols-6 mx-auto'>
                     <Controller 
-                        name='user_email' 
+                        name='emailID' 
                         control={control}
                         rules={{ 
                             required: true,
@@ -100,7 +101,7 @@ const SignUpForm: FC = () => {
                         @
                     </span>    
                     <Controller 
-                        name='email_domain' 
+                        name='emailDomain' 
                         control={control}
                         rules={{ 
                             required: true,                               
@@ -117,13 +118,13 @@ const SignUpForm: FC = () => {
                         }
                     />                                            
                 </div>   
-                <p className='h-6 text-xs font-semibold text-left text-red-600'>
+                <p className='h-6 max-w-xs mx-auto text-xs font-semibold text-left text-red-600'>
                     {
-                        errors.user_email?.type === 'required' ? (
+                        errors.emailID?.type === 'required' ? (
                             'email is required.'
-                        ) : errors.user_email?.type === 'pattern' ? (
+                        ) : errors.emailID?.type === 'pattern' ? (
                             '7 chars, with letters and numbers'
-                        ) : errors.email_domain?.type === 'required' && (
+                        ) : errors.emailDomain?.type === 'required' && (
                             'email domain is required.'
                         )
                     }        
@@ -132,7 +133,7 @@ const SignUpForm: FC = () => {
             <div className='w-full'>
                 <div className='max-w-xs mx-auto'>
                     <Controller 
-                        name='user_pw' 
+                        name='password' 
                         control={control}
                         rules={{ 
                             required: true,
@@ -150,9 +151,9 @@ const SignUpForm: FC = () => {
                     />  
                     <p className='h-6 text-xs font-semibold text-left text-red-600'>
                         {
-                            errors.user_pw?.type === 'required' ? (
+                            errors.password?.type === 'required' ? (
                                 'password is required.'
-                            ) : errors.user_pw?.type === 'pattern' && (
+                            ) : errors.password?.type === 'pattern' && (
                                 'Please enter at least 9 digits or English.'
                             )
                         }
@@ -162,7 +163,7 @@ const SignUpForm: FC = () => {
             <div className='w-full'>
                 <div className='max-w-xs mx-auto'>
                     <Controller 
-                        name='user_pw_match' 
+                        name='repeatPassword' 
                         control={control}
                         rules={{ 
                             required: true,                             
@@ -180,7 +181,7 @@ const SignUpForm: FC = () => {
                     />  
                     <p className='h-6 text-xs font-semibold text-left text-red-600'>
                         {
-                            errors.user_pw_match?.message
+                            errors.repeatPassword?.message
                         }
                     </p>            
                 </div>                  
@@ -189,7 +190,7 @@ const SignUpForm: FC = () => {
                 <p className='flex items-center justify-end max-w-xs gap-2 mx-auto text-xs font-thin'>
                     I agree to the Privacy Policy Terms of Use.
                     <Controller 
-                        name='terms_check'
+                        name='termsCheck'
                         control={control}                
                         render={
                             ({ field }) => (
@@ -206,10 +207,6 @@ const SignUpForm: FC = () => {
                 <Button>
                     Sign Up
                 </Button>
-                <OutlineButton>
-                    <AiOutlineGooglePlus className='text-2xl' />
-                    Google
-                </OutlineButton>
                 <div className='flex justify-end'>
                     <Link to='/login' className='text-sm font-thin border-b border-b-black hover:font-bold'>
                         Go to Login

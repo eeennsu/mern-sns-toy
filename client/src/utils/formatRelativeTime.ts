@@ -27,7 +27,7 @@ const formatRelativeTime = (date1: Date, date2: Date = new Date()): string => {
     } else if (diffInMilliseconds < 60 * 60 * 24 * 30 * 1000) {                         // 한달 미만일 땐 며칠전
         const days = Math.floor(diffInMilliseconds / (60 * 60 * 24 * 1000));
 
-        return rtf.format(-days, 'days');
+        return days === 2 ? '2일 전' : rtf.format(-days, 'days');
 
     } else if (diffInMilliseconds < 60 * 60 * 24 * 365 * 1000){                         // 1년 미만일 땐 몇달전
         const month = Math.floor(diffInMilliseconds / (60 * 60 * 24 * 30 * 1000));

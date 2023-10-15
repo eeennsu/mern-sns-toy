@@ -7,9 +7,9 @@ const postMessageSchema = mongoose.Schema({
     creator: String,
     tags: [String],
     selectedFile: String,        // 이미지를 문자열로 변환할 예정
-    likeCount: {
-        type: Number,
-        default: 0
+    likes: {
+        type: [String],
+        default: []
     },
     createdAt: {
         type: Date,

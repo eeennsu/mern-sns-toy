@@ -12,6 +12,7 @@ const getAllPosts = async (req, res) => {
         res.status(200).json(postMessages);
 
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ "message": error.message });
     }
 }
@@ -37,23 +38,30 @@ const getOnePost = async (req, res) => {
 
 const createPost = async (req, res) => {
 
-    const { title, message, creator, tags, selectedFile } = req.body;
+    const { title, message, tags, selectedFile, creator } = req.body;
 
-    if (!title || !message || !creator || !tags || !selectedFile) {
+    if (!title || !message || !tags || !selectedFile) {
         return res.status(400).json({ "message": "All information must required." });
     }
-
-    const newPost = new PostMessage({ title, message, creator, tags, selectedFile });
+    
+    // creator를 전달받으면 구글 유저, 아니면 일반유저
 
     try {
-        const result = await newPost.save();
+        const result = await PostMessage.create({
+            title,
+            message,
+            creator: creator? creator : req.email,
+            tags,
+            selectedFile
+        });
 
         console.log('newPost', result);
 
-        res.status(201).json(newPost);
+        res.status(201).json(result);     
+
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ "message": error.message });
+        res.status(500).json({ "message": error.message });
     }
 }
 
@@ -74,7 +82,7 @@ const updatePost = async (req, res) => {
         
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ "message": error.message });
+        res.status(500).json({ "message": error.message });
     }
 }
 
@@ -92,7 +100,7 @@ const deletePost = async (req, res) => {
         return res.status(200).json({ "message": "Post deleted successfully" });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ "message": error.message });
+        res.status(500).json({ "message": error.message });
     }
 }
 
@@ -105,12 +113,22 @@ const likePost = async (req, res) => {
     }
 
     try {
-        const likeUpdatedPost = await PostMessage.findByIdAndUpdate(_id, { $inc: { likeCount: 1 } }, { new: true });
+        // 먼저 기존에 좋아요를 눌렀는지 확인
+        const foundPost = await PostMessage.findById(_id);  
+        const existLikeUser = foundPost.likes.findIndex((email) => email === String(req.email));    
+        
+        if (existLikeUser === -1) {
+            foundPost.likes.push(req.email);
+        } else {
+            foundPost.likes = foundPost.likes.filter(email => email !== String(req.email));
+        }
+      
+        const updatedPost = await PostMessage.findByIdAndUpdate(_id, foundPost, { new: true });
 
-        res.status(200).json(likeUpdatedPost);
+        res.status(200).json(updatedPost);
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ "message": error.message });
+        res.status(500).json({ "message": error.message });
     }
 }
 

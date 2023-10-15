@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import posts from './routes/posts.js';
+import user from './routes/user.js';
+import crypto from 'crypto';
 dotenv.config();
 
 const PORT = process.env.PORT;
@@ -15,6 +17,7 @@ app.use(express.urlencoded({ limit: '30mb', extended: true }));
 // cors 오류를 해결해주는 작업은 반드시 route 경로보다 위에서 작용해야 한다
 app.use(cors());        
 
+app.use('/user', user);
 app.use('/posts', posts);
 
 app.get('/', (req, res) => {
@@ -31,3 +34,4 @@ mongoose.connect(process.env.MONGO_CONNECTION_URL)
     .catch((err) => {
         console.log('config error : ', err);
     });
+    

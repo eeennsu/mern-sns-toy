@@ -13,6 +13,9 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    id: {
+        type: String,
+    },
     createdAt: {
         type: Date,
         default: () => new Date()

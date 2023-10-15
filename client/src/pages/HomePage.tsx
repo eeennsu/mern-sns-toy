@@ -8,7 +8,7 @@ import { LoginPlease, PostForm, Posts } from '../features';
 const HomePage: FC = () => {
 
     const dispatch = useAppDispatch();
-    const isLoadingPost = useAppSelector(state => state.posts.isLoadingPost);
+    const isLoadingPost = useAppSelector(state => state.posts.isLoadingPost);    
     const isLogin = useAppSelector(state => state.user.isLogin);
 
     useEffect(() => {        

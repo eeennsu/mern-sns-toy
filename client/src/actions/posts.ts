@@ -12,9 +12,9 @@ export const getAllPosts = () => async (dispatch: RootDispatch) => {
     }
 }   
 
-export const createPost = (post: PostFormData) => async (dispatch: RootDispatch) => {
+export const createPost = (post: PostFormData, creator: string) => async (dispatch: RootDispatch) => {
     try {
-        const { data } = await createPost_API(post);
+        const { data } = await createPost_API({ ...post, creator });
         dispatch({ type: 'CREATE_POST', payload: data });
 
     } catch (error) {
