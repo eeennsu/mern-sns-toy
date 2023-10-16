@@ -45,7 +45,6 @@ const Header: FC = () => {
         if (profile) {
             const token = JSON.parse(profile)?.token;
             
-
             // 일단 현재 일반 로그인일 경우
             if (token) {
                 const decodedToken: any = decode<string>(token);
@@ -73,12 +72,12 @@ const Header: FC = () => {
             <section className='flex justify-end w-1/4'>
                 {
                     isLogin ? (
-                        <div className='flex items-center justify-between'>
-                            <div className='items-center hidden gap-3 w-36 md:flex'>
+                        <div className='flex items-center justify-between gap-3'>
+                            <div className='items-center hidden max-w-4xl gap-3 md:flex'>
                                 <Avatar size='large' className='flex items-center justify-center flex-shrink-0 text-xl' src={imgUrl || ''} >
                                     {email?.charAt(0) || <AiOutlineUser />}
                                 </Avatar>
-                                <h2 className='hidden overflow-hidden text-center text-ellipsis md:block whitespace-nowrap'>
+                                <h2 className='hidden overflow-hidden font-bold text-ellipsis md:block whitespace-nowrap'>
                                     {email}
                                 </h2>
                             </div>
