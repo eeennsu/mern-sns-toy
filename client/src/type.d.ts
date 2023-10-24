@@ -43,3 +43,12 @@ type GoogleUserInfo = {
     picture: string;
     sub: string;
 }
+
+type GoogleResponse = Omit<TokenResponse, "error" | "error_description" | "error_uri">
+
+type DecodedUserToken = {
+    email: string;
+    password: string;
+    iat: number;
+    exp: number;
+}

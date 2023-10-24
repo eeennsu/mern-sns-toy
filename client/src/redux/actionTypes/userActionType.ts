@@ -1,10 +1,9 @@
-import { CodeResponse, TokenResponse } from '@react-oauth/google';
+import { CodeResponse } from '@react-oauth/google';
 
 export const SET_LOGIN_USER = 'SET_LOGIN_USER' as const;
 export const SET_LOGOUT_USER = 'SET_LOGOUT_USER' as const;
 
 export type Role = 'USER' | 'ADMIN' | null;
-export type GoogleResponse = Omit<TokenResponse, "error" | "error_description" | "error_uri">
 
 export type User = {
     role: Role,

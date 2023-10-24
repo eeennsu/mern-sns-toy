@@ -1,12 +1,12 @@
 import { getGoogleInfo_API, login_API } from '../api/userApis';
 import { RootDispatch } from '../redux/actionTypes';
-import { GoogleResponse } from '../redux/actionTypes/userActionType';
+import type { CodeResponse } from '@react-oauth/google';
 
 export const userGoogleLogin = (codeResponse: GoogleResponse) => async (dispatch: RootDispatch) => {
     const { data } = await getGoogleInfo_API(codeResponse.access_token);
-    localStorage.setItem('profile', JSON.stringify(codeResponse));
 
-    console.log(data);
+    console.log('data', data);
+    localStorage.setItem('profile', JSON.stringify(codeResponse));
 
     dispatch({
         'type': 'SET_LOGIN_USER',

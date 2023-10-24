@@ -43,12 +43,13 @@ const Header: FC = () => {
         const profile = localStorage.getItem('profile');
 
         if (profile) {
-            const token = JSON.parse(profile)?.token;
+            const token: string = JSON.parse(profile)?.token;
             
             // 일단 현재 일반 로그인일 경우
             if (token) {
-                const decodedToken: any = decode<string>(token);
-
+                const decodedToken = decode<DecodedUserToken>(token);
+     
+                console.log('decodedToken', decodedToken);
                 if (decodedToken.exp * 1000 < new Date().getTime()) {
                     handleLogout();
                 }

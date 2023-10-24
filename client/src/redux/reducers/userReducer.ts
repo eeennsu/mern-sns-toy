@@ -1,12 +1,11 @@
 import { Role, UserAction } from '../actionTypes/userActionType';
-import { CodeResponse } from '@react-oauth/google';
 
 type UserStateType = {
     isLogin: boolean;
     role: Role;
     email: string | null;
     imgUrl: string | null;
-    googleResponse: CodeResponse | null,
+    googleResponse: GoogleResponse | null,
     token: string | null;
 }
 
