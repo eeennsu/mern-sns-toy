@@ -1,6 +1,6 @@
-import axiosInst from './axiosInst';
+import axiosInst from './axiosInst'; 
 
-export const getPosts_API = () => axiosInst.get<Post[]>('posts');
+export const getPosts_API = (curPage: number) => axiosInst.get<Response_getPosts_API>('posts', { params: { curPage }});
 
 export const getOnePost_API = (id: string) => axiosInst.get<Post>(`posts/${id}`);
 

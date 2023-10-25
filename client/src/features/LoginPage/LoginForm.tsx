@@ -53,7 +53,7 @@ const LoginForm: FC = () => {
     }
 
     return (
-        <>
+        <section>
             <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col mt-3'>
                 <div className='w-full'>
                     <div className='max-w-xs mx-auto'>
@@ -137,9 +137,8 @@ const LoginForm: FC = () => {
                         Go to Sign Up
                     </Link>
                 </div>             
-            </div>           
-          
-        </>
+            </div>          
+        </section>
     );
 };
 

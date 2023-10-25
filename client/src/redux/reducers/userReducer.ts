@@ -1,4 +1,4 @@
-import { Role, UserAction } from '../actionTypes/userActionType';
+import { Role, UserAction } from '../actionTypes/userActionsTypes';
 
 type UserStateType = {
     isLogin: boolean;

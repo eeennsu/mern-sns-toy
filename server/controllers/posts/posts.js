@@ -1,16 +1,46 @@
 import mongoose from 'mongoose';
 import PostMessage from '../../models/PostMessage.js';
 
-const getAllPosts = async (req, res) => {
+const getPagePosts = async (req, res) => {
+    // 다 가져오는 방법 
+    /* 
+        try {
+            const postMessages = await PostMessage.find({});
+            
+            if (!postMessages) {
+                return res.status(400).json({ "message": "Not found posts." });
+            }
+
+            res.status(200).json(postMessages);
+
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ "message": error.message });
+        }
+    */
+
+    // page parameter를 통해 가져오는 방법
+
+
+    const curPage = parseInt(req.query.curPage) || 1;
+    console.log(curPage);
+
+    const perPage = 4;
+    const skip = (curPage - 1) * perPage;
+
     try {
-        const postMessages = await PostMessage.find({});
-        
-        if (!postMessages) {
-            return res.status(400).json({ "message": "Not found posts." });
+        const pagePosts = await PostMessage.find().sort({ createdAt: -1 }).skip(skip).limit(perPage);
+        const totalCount = await PostMessage.countDocuments();
+
+        if (!pagePosts) {
+            return res.status(400).json({ "message": "Not found posts page." });
         }
 
-        res.status(200).json(postMessages);
+        if (!totalCount) {
+            return res.status(400).json({ "message": "Not calculate total counts." });
+        }
 
+        return res.status(200).json({ pagePosts, totalCount });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ "message": error.message });
@@ -19,7 +49,7 @@ const getAllPosts = async (req, res) => {
 
 const getOnePost = async (req, res) => {
 
-    const { id: _id } = req.params;
+    const { id: _id } = req.params;    
 
     if (!mongoose.Types.ObjectId.isValid(_id)) {
         return res.status(404).json({ "message": "Invalid id" });
@@ -133,7 +163,7 @@ const likePost = async (req, res) => {
 }
 
 export {
-    getAllPosts,
+    getPagePosts,
     getOnePost,
     createPost,
     updatePost,

@@ -31,12 +31,12 @@ const Header: FC = () => {
         navigate('/');
     }
 
-    const handleLogout = async () => {
+    const handleLogout = async (auto: boolean = false) => {
         const logoutDispatch = userLogout();
         await logoutDispatch(dispatch);
 
         navigate('/', { replace: true });
-        message.success('logout success');
+        !auto && message.success('logout success');
     }
 
     useEffect(() => {
@@ -51,7 +51,7 @@ const Header: FC = () => {
      
                 console.log('decodedToken', decodedToken);
                 if (decodedToken.exp * 1000 < new Date().getTime()) {
-                    handleLogout();
+                    handleLogout(true);
                 }
             }      
             
@@ -82,7 +82,7 @@ const Header: FC = () => {
                                     {email}
                                 </h2>
                             </div>
-                            <OutlineButton onClick={handleLogout}> 
+                            <OutlineButton onClick={() => handleLogout()}> 
                                 <AiOutlineLogout />
                                 logout
                             </OutlineButton>

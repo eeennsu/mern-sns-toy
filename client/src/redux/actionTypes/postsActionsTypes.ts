@@ -1,4 +1,4 @@
-export const GET_ALL_POSTS = 'GET_ALL_POSTS' as const;
+export const GET_POSTS = 'GET_POSTS' as const;
 export const CREATE_POST = 'CREATE_POST' as const;
 export const UPDATE_POST = 'UPDATE_POST' as const;
 export const CHANGE_POST_ID_AT_FORM = 'CHANGE_POST_ID_AT_FORM' as const;
@@ -8,7 +8,7 @@ export const IS_LOADING_API_POST = 'IS_LOADING_API_POST' as const;
 export const SELECT_POST_ID = 'SELECT_POST_ID' as const;
 
 type GetAllPostAction = {
-    type: typeof GET_ALL_POSTS;
+    type: typeof GET_POSTS;
     payload: Post[];             // post array
 }
 

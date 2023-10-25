@@ -2,10 +2,11 @@ import { createPost_API, deletePost_API, getPosts_API, plusLikePost_API, updateP
 import { RootDispatch } from '../redux/actionTypes'; 
 
 // 액션생성자는 액션을 반환하는 함수이다
-export const getAllPosts = () => async (dispatch: RootDispatch) => {
+export const getPosts = (curPage: number) => async (dispatch: RootDispatch) => {
     try {
-        const { data } = await getPosts_API();
-        dispatch({ type: 'GET_ALL_POSTS', payload: data });
+        const { data } = await getPosts_API(curPage);
+        dispatch({ type: 'GET_POSTS', payload: data.pagePosts });
+        dispatch({ type: 'UPDATE_TOTAL_POSTS_COUNT', payload: data.totalCount })
 
     } catch (error) {
         console.log(error);

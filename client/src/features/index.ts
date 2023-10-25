@@ -4,6 +4,8 @@ import Posts from './HomePage/Posts/Posts';
 import LoginForm from './LoginPage/LoginForm';
 import LoginPlease from './HomePage/PostForm/LoginPlease';
 import SignUpForm from './SignUpPage/SignUpForm';
+import Search from './HomePage/Search/Search';
+import Side from './HomePage/Side/Side';
 
 export {
     PostForm,
@@ -11,5 +13,7 @@ export {
     Posts,
     LoginForm, 
     LoginPlease,  
-    SignUpForm 
+    SignUpForm,
+    Search,
+    Side
 }

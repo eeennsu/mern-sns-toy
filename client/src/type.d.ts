@@ -52,3 +52,8 @@ type DecodedUserToken = {
     iat: number;
     exp: number;
 }
+
+type Response_getPosts_API = { 
+    pagePosts: Post[], 
+    totalCount: number 
+}

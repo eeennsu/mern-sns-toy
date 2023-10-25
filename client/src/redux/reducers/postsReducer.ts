@@ -1,4 +1,4 @@
-import { PostsAction } from "../actionTypes/postsActions";
+import { PostsAction } from "../actionTypes/postsActionsTypes";
 
 type PostsStateType = {
     isLoadingPost: boolean;
@@ -15,10 +15,10 @@ const initialState: PostsStateType = {
 const postsReducer = (state: PostsStateType = initialState, { type, payload }: PostsAction): PostsStateType => {
 
     switch(type) {
-        case 'GET_ALL_POSTS': 
+        case 'GET_POSTS': 
             return {
                 ...state,
-                posts: payload
+                posts: payload,
             };
         
         case 'CREATE_POST':

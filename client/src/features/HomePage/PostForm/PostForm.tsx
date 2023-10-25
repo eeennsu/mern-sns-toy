@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../../redux/actionTypes';
 import { createPost, updatePost } from '../../../actions/posts';
 import { message as antdMessage } from 'antd';
 import { shallowEqual } from 'react-redux';
+import { Button2, Input } from '../../../components';
 
 const initForm: PostFormData = {
     title: '',
@@ -110,13 +111,13 @@ const Form: FC = () => {
     }, [selectedPost]);
 
     return (
-        <aside className='relative flex flex-col justify-center h-full p-4 mt-8 transition duration-500 bg-white rounded-sm shadow-2xl md:mt-0 ites-center hover:-translate-y-3'>
+        <section className='relative flex flex-col justify-center h-full p-4 mt-8 transition duration-500 bg-white rounded-sm shadow-2xl md:mt-0 ites-center hover:-translate-y-3'>
             <h2 className='py-2 text-xl font-bold text-black'>
                 {selectedPost ? 'Updating your memory' : 'Creating your Memory'}
             </h2>
             <form className='flex flex-col gap-4 mt-2' autoComplete='off' noValidate onSubmit={handleSubmit}>
                 <div>
-                    <input className='w-full px-3 py-2 text-base text-black border rounded-sm outline-none bg-inherit focus:border-black' name='title' placeholder='Title' value={formData.title} onChange={handleInputChange} />
+                    <Input name='title' placeholder='Title' value={formData.title} onChange={handleInputChange} />
                 </div>                  
                         
                 <div>
@@ -124,24 +125,26 @@ const Form: FC = () => {
                 </div>
 
                 <div>
-                    <input className='w-full px-3 py-2 text-base text-black border rounded-sm outline-none bg-inherit focus:border-black' name='tags' placeholder='Tags (# separated)' value={formData.tags} onChange={handleInputChange} />
+                    <Input name='tags' placeholder='Tags (# separated)' value={formData.tags} onChange={handleInputChange}  />                   
                 </div>    
                 <div>
                     <FileBase type='file' multiple={false} onDone={({ base64 }: { base64: string }) => setFormData(prev => ({ ...prev, selectedFile: base64 }))} />
                     {/* files <input name='selectedFile' type='file' onChange={handleFileChange} multiple={false} accept='accept="image/jpg, image/png, image/jpeg"' /> */}
                 </div>
+
                 <div>
-                    <button type='submit' className={`w-full px-3 py-2 text-sm text-white uppercase ${selectedPost ? 'bg-green-600' : 'bg-blue-800'} rounded-sm shadow-lg let`}>
+                    <Button2 type='submit' className={selectedPost ? 'bg-green-600' : 'bg-blue-800'}>                      
                         {selectedPost ? 'update' : 'create'}
-                    </button>
-                </div>   
+                    </Button2>                
+                </div> 
+                  
                 <div>
-                    <button type='reset'  onClick={handleFormReset} className='w-full px-3 py-2 text-sm text-white uppercase bg-red-600 rounded-sm shadow-lg let'>
+                    <Button2 type='reset' onClick={handleFormReset} className='bg-red-600'>
                         clear
-                    </button>                
+                    </Button2>                        
                 </div>                                                                
-            </form>
-        </aside>
+            </form>     
+        </section>
     );
 };
 

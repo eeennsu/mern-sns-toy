@@ -1,13 +1,14 @@
 import { combineReducers } from 'redux';
 import postsReducer from './postsReducer';
 import userReducer from './userReducer';
-import { persistReducer, PersistConfig  } from 'redux-persist';
-import { RootState } from '../actionTypes';
+import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import pageReducer from './pageReducer';
 
 const rootReducer = combineReducers({
     posts: postsReducer,
-    user: userReducer
+    user: userReducer,
+    page: pageReducer
 });
 
 export default persistReducer({

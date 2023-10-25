@@ -1,20 +1,20 @@
 import type { FC } from 'react';
 import { useAppDispatch, useAppSelector } from '../redux/actionTypes';
-import { useEffect } from 'react';
-import { getAllPosts } from '../actions/posts';
+import { useEffect, useState } from 'react';
+import { getPosts } from '../actions/posts';
 import { Spin } from '../components';
-import { LoginPlease, PostForm, Posts } from '../features';
+import { LoginPlease, PostForm, Posts, Search, Side } from '../features/index';
 
 const HomePage: FC = () => {
 
     const dispatch = useAppDispatch();
-    const isLoadingPost = useAppSelector(state => state.posts.isLoadingPost);    
-    const isLogin = useAppSelector(state => state.user.isLogin);
+    const isLoadingPost = useAppSelector(state => state.posts.isLoadingPost);
+    const curPage = useAppSelector(state => state.page.curPage);   
 
     useEffect(() => {        
         console.log(import.meta.env.DEV ? 'dev 모드' : 'prod 모드');
 
-        const getPostsDispatch = getAllPosts();
+        const getPostsDispatch = getPosts(curPage);
 
         getPostsDispatch(dispatch);
     }, [dispatch]);
@@ -24,20 +24,14 @@ const HomePage: FC = () => {
             {
                 isLoadingPost && (
                     <div className='absolute z-20 flex items-center bg-black/10'>
-                        <div className='absolute inset-0 flex items-center w-full max-h-screen min-h-screen'>
+                        <div className='absolute flex items-center w-full max-h-screen min-h-screen inset-px'>
                             <Spin />    
                         </div>                                  
                     </div>
                 )
             }
             <Posts />              
-            {
-                isLogin ? (
-                    <PostForm />                            
-                ) : (
-                    <LoginPlease />
-                )
-            }                 
+            <Side />            
         </section>    
     );
 };
