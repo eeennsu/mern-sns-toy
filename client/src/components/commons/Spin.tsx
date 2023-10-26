@@ -9,7 +9,7 @@ type Props = {
 const Spin: FC<Props> = ({ height = 450, size = 'large' }) => {
 
     return (
-        <div className={`flex items-center justify-center w-full h-[${height}px]`}>           
+        <div className={`flex flex-1 items-center justify-center w-full`}>           
             <AntdSpin size={size} />      
         </div>
     )

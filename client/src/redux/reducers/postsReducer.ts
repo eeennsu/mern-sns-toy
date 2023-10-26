@@ -3,13 +3,15 @@ import { PostsAction } from "../actionTypes/postsActionsTypes";
 type PostsStateType = {
     isLoadingPost: boolean;
     posts: Post[];
-    selectedPost?: Post;
+    searchedPosts: Post[];
+    selectedPost?: Post | null;
 }
 
 const initialState: PostsStateType = {
     isLoadingPost: false,
     posts: [],
-    selectedPost: undefined,
+    searchedPosts: [],
+    selectedPost: null,
 }
 
 const postsReducer = (state: PostsStateType = initialState, { type, payload }: PostsAction): PostsStateType => {
@@ -61,13 +63,19 @@ const postsReducer = (state: PostsStateType = initialState, { type, payload }: P
             return {
                 ...state,
                 isLoadingPost: payload               // payload에는 triigger 
+            };
+
+        case 'SEARCH_POSTS': 
+            return {
+                ...state,
+                searchedPosts: payload
             }
 
         case 'SELECT_POST_ID':         
             return {
                 ...state,
                 selectedPost: state.posts.find((post) => post._id === payload)
-            }
+            };
             
         default: 
             return state;

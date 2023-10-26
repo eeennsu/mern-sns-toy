@@ -21,9 +21,7 @@ const getPagePosts = async (req, res) => {
 
     // page parameter를 통해 가져오는 방법
 
-
     const curPage = parseInt(req.query.curPage) || 1;
-    console.log(curPage);
 
     const perPage = 4;
     const skip = (curPage - 1) * perPage;
@@ -60,6 +58,28 @@ const getOnePost = async (req, res) => {
         
         res.status(200).json(postMessage);
         
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ "message": error.message })
+    }
+}
+
+const getPostsBySearch = async (req, res) => {
+    const { searchQuery, tags } = req.query;
+
+    try {
+        const title = new RegExp(searchQuery, 'i');             // i 플래그는 대소문자를 무시하도록 설정
+        
+        const posts = await PostMessage.find({
+            $or: [
+                { title },
+                { tags: {
+                    $in: tags.split(',')
+                }}
+            ]
+        });
+
+        res.status(200).json({ posts });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ "message": error.message })
@@ -117,7 +137,7 @@ const updatePost = async (req, res) => {
 }
 
 const deletePost = async (req, res) => {
-    
+
     const { id: _id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(_id)) {
@@ -135,7 +155,7 @@ const deletePost = async (req, res) => {
 }
 
 const likePost = async (req, res) => {
-
+    console.log('like ?');
     const { id: _id } = req.params;
     
     if (!mongoose.Types.ObjectId.isValid(_id)) {
@@ -165,6 +185,8 @@ const likePost = async (req, res) => {
 export {
     getPagePosts,
     getOnePost,
+    getPostsBySearch,
+
     createPost,
     updatePost,
     deletePost,

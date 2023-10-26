@@ -20,8 +20,8 @@ const HomePage: FC = () => {
     }, [dispatch]);
     
     return (
-        <section className='relative flex flex-col-reverse items-center pt-6 md:pt-12 md:items-start md:flex-row justify-beteen'>
-            {
+        <section className='relative flex flex-col-reverse items-center flex-1 pt-6 md:pt-12 md:items-start md:flex-row justify-beteen'>
+            {/* {
                 isLoadingPost && (
                     <div className='absolute z-20 flex items-center bg-black/10'>
                         <div className='absolute flex items-center w-full max-h-screen min-h-screen inset-px'>
@@ -29,7 +29,7 @@ const HomePage: FC = () => {
                         </div>                                  
                     </div>
                 )
-            }
+            } */}
             <Posts />              
             <Side />            
         </section>    

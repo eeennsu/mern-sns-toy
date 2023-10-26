@@ -19,6 +19,7 @@ const Header: FC = () => {
         email: state.user.email,
         imgUrl: state.user.imgUrl
     }), shallowEqual);
+    
     const location = useLocation();
 
     const navigate = useNavigate();
@@ -28,6 +29,10 @@ const Header: FC = () => {
     }
 
     const handleHomePage = () => {
+        const path = location.pathname;
+        
+        path === '/' && window.location.reload();
+        
         navigate('/');
     }
 

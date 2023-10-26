@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/actionTypes';
 import { deletePost, plusLiketPost } from '../../actions/posts';
 import { shallowEqual } from 'react-redux';
 import { memo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
     post: Post;
@@ -17,6 +18,7 @@ const colors = ['blue', 'cyan', 'gold', 'magenta', 'geekblue', 'green'];
 
 const Post: FC<Props> = ({ post }) => {
     
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { isLogin, email, googleResponse } = useAppSelector(state => ({
         isLogin: state.user.isLogin,
@@ -72,8 +74,12 @@ const Post: FC<Props> = ({ post }) => {
         return true;
     }
     
+    const handleDetailPostPage = () => {
+        navigate(`/detail-post/${post._id}`);
+    }
+    
     return (
-        <div className='transition bg-white cursor-pointer card w-80 shadow-post-card group'>
+        <div onClick={handleDetailPostPage} className='transition bg-white cursor-pointer card w-80 shadow-post-card group'>
             <figure className='relative inset-0'>
                 <div className='absolute left-0 z-20 flex flex-col justify-center w-full px-5 top-4'>
                     <div className='flex justify-between'>

@@ -1,6 +1,6 @@
-import type { ButtonHTMLAttributes, FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren, DetailedHTMLProps, ButtonHTMLAttributes } from 'react';
 
-type Props = PropsWithChildren & ButtonHTMLAttributes<HTMLButtonElement>
+type Props = PropsWithChildren & DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
 
 const Button: FC<Props> = ({ children,  className, ...btnProps }) => {
 

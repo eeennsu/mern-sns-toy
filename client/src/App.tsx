@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Layout, HomePage, LoginPage, SignUpPage } from './pages';
+import { Layout, HomePage, LoginPage, SignUpPage, DetailPostPage } from './pages';
 
 const App = () => {
 
@@ -7,9 +7,10 @@ const App = () => {
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<Layout />}>
-                    <Route index element={<HomePage />} />
-                    <Route path='login' element={<LoginPage />} />
-                    <Route path='signUp' element={<SignUpPage />} />
+                    <Route index element={<HomePage />} />        
+                    <Route path='/detail-post/:id' element={<DetailPostPage />}/>    
+                    <Route path='/login' element={<LoginPage />} />
+                    <Route path='/signUp' element={<SignUpPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -1,11 +1,12 @@
 import type { FC } from 'react';
 import { LoginPlease, PostForm, Search } from '../..';
 import { useAppSelector } from '../../../redux/actionTypes';
-import Pagination from '../../../components/commons/Pagination';
+import Pagination from '../../../components/commons/Pagination/Pagination';
 
 const Side: FC = () => {
 
     const isLogin = useAppSelector(state => state.user.isLogin);
+    const searchedPosts = useAppSelector(state => state.posts.searchedPosts);
 
     return (
         <aside>     
@@ -17,7 +18,7 @@ const Side: FC = () => {
                     <LoginPlease />
                 )
             }              
-            <Pagination />         
+            {!searchedPosts.length && <Pagination />}       
         </aside>   
     );
 };

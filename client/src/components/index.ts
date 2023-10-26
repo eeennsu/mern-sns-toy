@@ -4,7 +4,8 @@ import Button from './commons/Button';
 import OutlineButton from './commons/OutlineButton';
 import Button2 from './commons/Button2';
 import Input from './commons/Input';
-import PageButton from './commons/PageButton';
+import PageButton from './commons/Pagination/PageButton';
+import ArrowButton from './commons/Pagination/ArrowButton';
 
 export {
     Spin,
@@ -13,5 +14,6 @@ export {
     Button2,
     OutlineButton,
     PageButton,
-    Input
+    Input,
+    ArrowButton
 }

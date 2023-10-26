@@ -1,6 +1,8 @@
 export const GET_POSTS = 'GET_POSTS' as const;
 export const CREATE_POST = 'CREATE_POST' as const;
 export const UPDATE_POST = 'UPDATE_POST' as const;
+export const SEARCH_POSTS = 'SEARCH_POSTS' as const;
+
 export const CHANGE_POST_ID_AT_FORM = 'CHANGE_POST_ID_AT_FORM' as const;
 export const DELETE_POST = 'DELETE_POST' as const;
 export const PLUS_LIKE_POST = 'PLUS_LIKE_POST' as const;
@@ -48,4 +50,9 @@ type SelectPostAction = {
     payload: string | null  // id
 }
 
-export type PostsAction = GetAllPostAction | CreatePostAction | UpdatePostAction | DeletePostAction | PlusPostLikeAction | IsLoadingAPIPostAction | SelectPostAction;
+type SerachPostsAction = {
+    type: typeof SEARCH_POSTS;
+    payload: Post[]
+}
+
+export type PostsAction = GetAllPostAction | CreatePostAction | UpdatePostAction | DeletePostAction | PlusPostLikeAction | IsLoadingAPIPostAction | SelectPostAction | SerachPostsAction;

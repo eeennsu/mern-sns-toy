@@ -1,17 +1,33 @@
-import { createPost_API, deletePost_API, getPosts_API, plusLikePost_API, updatePost_API } from '../api/postsApis';
+import { createPost_API, deletePost_API, getPosts_API, plusLikePost_API, searchPosts_API, updatePost_API } from '../api/postsApis';
 import { RootDispatch } from '../redux/actionTypes'; 
 
 // 액션생성자는 액션을 반환하는 함수이다
 export const getPosts = (curPage: number) => async (dispatch: RootDispatch) => {
     try {
+        dispatch({ type: 'IS_LOADING_API_POST', payload: true });
         const { data } = await getPosts_API(curPage);
         dispatch({ type: 'GET_POSTS', payload: data.pagePosts });
         dispatch({ type: 'UPDATE_TOTAL_POSTS_COUNT', payload: data.totalCount })
-
+        dispatch({ type: 'SEARCH_POSTS', payload: [] });
+        dispatch({ type: 'IS_LOADING_API_POST', payload: false });
     } catch (error) {
         console.log(error);
     }
 }   
+
+export const searchPosts = (title: string, tags: string) => async (dispatch: RootDispatch) => {
+    try {
+        dispatch({ type: 'IS_LOADING_API_POST', payload: true });
+        const { data } = await searchPosts_API(title, tags);
+        dispatch({ type: 'GET_POSTS', payload: [] });
+        dispatch({ type: 'SEARCH_POSTS', payload: data.posts });
+        dispatch({ type: 'UPDATE_TOTAL_POSTS_COUNT', payload: data.totalCount })
+        dispatch({ type: 'IS_LOADING_API_POST', payload: false });
+
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export const createPost = (post: PostFormData, creator: string) => async (dispatch: RootDispatch) => {
     try {

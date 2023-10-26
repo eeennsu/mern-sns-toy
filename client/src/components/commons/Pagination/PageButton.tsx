@@ -1,6 +1,6 @@
 import type { FC } from 'react';
-import { changeDirectPage } from '../../actions/page';
-import { useAppDispatch, useAppSelector } from '../../redux/actionTypes';
+import { changeDirectPage } from '../../../actions/page';
+import { useAppDispatch, useAppSelector } from '../../../redux/actionTypes';
 import { shallowEqual } from 'react-redux';
 
 type Props = {
@@ -24,7 +24,7 @@ const PageButton: FC<Props> = ({ num }) => {
     }
 
     return (
-        <div className={`${isCurPage && 'font-bold'}`}>
+        <div className={`${isCurPage && 'bg-blue-100 border-gray-400'}  flex items-center justify-center w-3 h-3 p-4 border border-gray-300 rounded-full`}>
             <button onClick={handleChangeDirectPage} disabled={isPageLoading}>
                 {num}
             </button>
