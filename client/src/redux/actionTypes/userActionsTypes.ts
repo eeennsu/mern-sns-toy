@@ -1,5 +1,3 @@
-import { CodeResponse } from '@react-oauth/google';
-
 export const SET_LOGIN_USER = 'SET_LOGIN_USER' as const;
 export const SET_LOGOUT_USER = 'SET_LOGOUT_USER' as const;
 

@@ -1,6 +1,5 @@
 import { getGoogleInfo_API, login_API } from '../api/userApis';
 import { RootDispatch } from '../redux/actionTypes';
-import type { CodeResponse } from '@react-oauth/google';
 
 export const userGoogleLogin = (codeResponse: GoogleResponse) => async (dispatch: RootDispatch) => {
     const { data } = await getGoogleInfo_API(codeResponse.access_token);

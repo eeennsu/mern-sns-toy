@@ -3,9 +3,9 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { Input, message } from 'antd';
 import { AiOutlineGooglePlus } from 'react-icons/ai';
 import { Button, OutlineButton } from '../../components/index';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
-import { useAppDispatch } from '../../redux/actionTypes';
+import { useAppDispatch, useAppSelector } from '../../redux/actionTypes';
 import { userGoogleLogin, userNormalLogin } from '../../actions/user';
 import { useEffect } from 'react';
 
@@ -13,8 +13,11 @@ const LoginForm: FC = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
+    
     const dispatch = useAppDispatch();
-    const { handleSubmit, formState: { errors }, control, getValues, setValue } = useForm<UserLoginFormType>();
+    const searchedPosts = useAppSelector(state => state.posts.searchedPosts);
+
+    const { handleSubmit, formState: { errors }, control, setValue } = useForm<UserLoginFormType>();
     const onSubmit: SubmitHandler<UserLoginFormType> = async (userData) => {
         const loginDispatch = userNormalLogin(userData);
         await loginDispatch(dispatch);
@@ -29,6 +32,8 @@ const LoginForm: FC = () => {
         if (locationState?.signUpedEmail) {
             setValue('email', locationState.signUpedEmail);
         }
+
+        //eslint-disable-next-line
     }, [locationState]);
 
     const handleGoogleLogin = useGoogleLogin({
@@ -50,6 +55,11 @@ const LoginForm: FC = () => {
     const loginSuc = () => {
         message.success('User logged in successfully');
         navigate('/');
+    }
+
+    const handleSignUpPage = () => {
+        searchedPosts.length >= 1 && dispatch({ type: 'SEARCH_POSTS', payload: [] })
+        navigate('/signUp');
     }
 
     return (
@@ -133,9 +143,9 @@ const LoginForm: FC = () => {
                     Google
                 </OutlineButton>   
                 <div className='flex justify-end'>
-                    <Link to='/signUp' className='text-sm font-thin border-b border-b-black hover:font-bold'>
+                    <p onClick={handleSignUpPage} className='text-sm font-thin border-b border-b-black hover:font-bold'>
                         Go to Sign Up
-                    </Link>
+                    </p>
                 </div>             
             </div>          
         </section>

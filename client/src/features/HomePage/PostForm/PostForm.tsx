@@ -1,4 +1,4 @@
-import type { FC, FormEvent, ChangeEvent, SetStateAction, Dispatch } from 'react';
+import type { FC, FormEvent, ChangeEvent } from 'react';
 import { useState, useEffect } from 'react';
 import FileBase from 'react-file-base64';
 import { useAppDispatch, useAppSelector } from '../../../redux/actionTypes';

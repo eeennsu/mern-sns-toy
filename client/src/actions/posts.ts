@@ -21,11 +21,12 @@ export const searchPosts = (title: string, tags: string) => async (dispatch: Roo
         dispatch({ type: 'SEARCH_POSTS', payload: [] });            // 이전 검색 기록이 있으면 초기화
         dispatch({ type: 'IS_LOADING_API_POST', payload: true });
         const { data } = await searchPosts_API(title, tags);
+        console.log(data);
         dispatch({ type: 'GET_POSTS', payload: [] });
         dispatch({ type: 'SEARCH_POSTS', payload: data.posts });
         dispatch({ type: 'UPDATE_TOTAL_POSTS_COUNT', payload: data.totalCount })
         dispatch({ type: 'IS_LOADING_API_POST', payload: false });
-
+        
     } catch (error) {
         console.log(error);
     }

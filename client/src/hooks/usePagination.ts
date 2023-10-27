@@ -1,7 +1,8 @@
 export interface UsePaginationProps {   
     count: number;                               // 페이지의 전체 개수
     page: number;                                // 현재 페이지
-    onPageChange(page: number): void;            // 페이지 체인지 함수
+    // eslint-disable-next-line
+    onPageChange: (page: number) => void;            // 페이지 체인지 함수
     disabled?: boolean;                           // 비활성화
     siblingCount?: number;                       // 현재 페이지 전후에 항상 표시되는 수 
     boundaryCount?: number;                      // 시작과 끝에서 항상 표시되는 페이지의 수

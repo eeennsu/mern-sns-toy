@@ -7,7 +7,6 @@ import { useMemo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/actionTypes';
 import { deletePost, plusLiketPost } from '../../actions/posts';
 import { shallowEqual } from 'react-redux';
-import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 type Props = {
@@ -125,7 +124,7 @@ const Post: FC<Props> = ({ post }) => {
                         </button>                                        
                     </div>
                     <div className={`${(isLogin && isCurrentUserPost) ? 'block' : 'hidden'}`}>
-                        <button onClick={handleDelete} disabled={!isCurrentUserPost} className={`flex w-[98px] items-center justify-center gap-1 px-2.5 py-1.5 text-red-400 transition-colors duration-200 active:bg-gray-400/50 hover:bg-gray-400/25 rounded-3xl`}>
+                        <button onClick={handleDelete} disabled={!isCurrentUserPost} className='flex w-[98px] items-center justify-center gap-1 px-2.5 py-1.5 text-red-400 transition-colors duration-200 active:bg-gray-400/50 hover:bg-gray-400/25 rounded-3xl'>
                             <BiTrash />
                             <span className='w-full'>
                                 {

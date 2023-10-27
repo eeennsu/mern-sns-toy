@@ -14,5 +14,9 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    "quotes": ["error", "single"],
+    "no-console": ["warn", { "allow": ["warn", "error", "info", "log"] }],
+    "no-unused-vars": "error",
+    "no-multiple-empty-lines": "error"
   },
 }

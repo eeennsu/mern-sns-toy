@@ -1,8 +1,7 @@
 import type { FC } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { Checkbox, Input, Select, message } from 'antd';
-import { Button, OutlineButton } from '../../components/index';
-import { AiOutlineGooglePlus } from 'react-icons/ai';
+import { Button } from '../../components/index';
 import { Link, useNavigate } from 'react-router-dom';
 import { emailSelectOptions } from '../../constants/SignUpPage';
 import { signUp_API } from '../../api/userApis';

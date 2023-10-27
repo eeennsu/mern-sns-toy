@@ -1,7 +1,4 @@
 import type { FC, PropsWithChildren } from 'react';
-import { changeDirectPage } from '../../../actions/page';
-import { useAppDispatch, useAppSelector } from '../../../redux/actionTypes';
-import { shallowEqual } from 'react-redux';
 
 type Props = {
     selected: boolean;

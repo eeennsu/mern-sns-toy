@@ -1,9 +1,7 @@
 import type { FC } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../redux/actionTypes';
 import { shallowEqual } from 'react-redux';
-import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs';
 import { changePage } from '../../../actions/page';
-import { ArrowButton, PageButton, Spin } from '../../../components';
 import Pagination from '../../../components/commons/Pagination/Pagination';
 
 const PostPagenation: FC = () => {

@@ -16,20 +16,23 @@ const Header: FC = () => {
     const location = useLocation();
 
     const dispatch = useAppDispatch();
-    const { isLogin, role, email, imgUrl } = useAppSelector(state => ({
+    const { isLogin, email, imgUrl, searchedPosts } = useAppSelector(state => ({
         isLogin: state.user.isLogin,
         role: state.user.role,
         email: state.user.email,
-        imgUrl: state.user.imgUrl
+        imgUrl: state.user.imgUrl,
+        searchedPosts: state.posts.searchedPosts
     }), shallowEqual); 
 
     const handleLoginPage = () => {
+        searchedPosts.length >= 1 && dispatch({ type: 'SEARCH_POSTS', payload: [] });
         navigate('/login');
     }
 
     const handleHomePage = () => {
+        searchedPosts.length >= 1 && dispatch({ type: 'SEARCH_POSTS', payload: [] });
         const path = location.pathname;
-        
+    
         path === '/' ? navigate(0) : navigate('/');
     }
 
@@ -57,12 +60,14 @@ const Header: FC = () => {
                 }
             }      
             
-            // 구글 로그인일 경우
-            else {
+            // 구글 로그인일 경우, 잠시 생략
+            // else {
 
-            }
+            // }
         }
-    }, [location]);
+
+    //eslint-disable-next-line
+    }, []);
 
     return (
         <header className='sticky z-20 flex items-center justify-between px-8 py-1 bg-white shadow-lg top-10 md:py-2 md:px-12 rounded-xl'>

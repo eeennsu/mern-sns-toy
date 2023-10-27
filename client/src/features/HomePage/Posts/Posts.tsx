@@ -1,4 +1,4 @@
-import type { FC, Dispatch, SetStateAction } from 'react';
+import type { FC } from 'react';
 import { useAppSelector } from '../../../redux/actionTypes';
 import { Post, Spin } from '../../../components';
 import { shallowEqual } from 'react-redux';

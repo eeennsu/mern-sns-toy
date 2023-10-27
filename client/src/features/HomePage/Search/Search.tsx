@@ -1,19 +1,14 @@
-import type { FC, FormEvent, ChangeEvent, CSSProperties  } from 'react';
+import type { FC, FormEvent, ChangeEvent  } from 'react';
 import { Button2, Input } from '../../../components';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import message from 'antd/es/message';
 import { searchPosts } from '../../../actions/posts';
-import { useAppDispatch, useAppSelector } from '../../../redux/actionTypes';
-import { shallowEqual } from 'react-redux';
+import { useAppDispatch } from '../../../redux/actionTypes';
 import ChipInput from 'material-ui-chip-input';
 
 const Search: FC = () => {
 
     const dispatch = useAppDispatch();
-    const { isLoadingPosts, searchedPosts } = useAppSelector(state => ({
-        isLoadingPosts: state.posts.isLoadingPost,
-        searchedPosts: state.posts.searchedPosts
-    }), shallowEqual);
 
     const [inputTitle, setInputTitle] = useState<string>('');
     const [inputTags, setInputTags] = useState<string[]>([]);
@@ -26,14 +21,14 @@ const Search: FC = () => {
             return;
         }
 
-        const searchDispatch = searchPosts(inputTitle.trim(), inputTags.join(','));
+        const searchDispatch = searchPosts('totototototo', inputTags.join(','));
         
         await searchDispatch(dispatch);
     }
 
     const handleChangeTitle = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setInputTitle(e.target.value)
-    }, [inputTitle]);
+    }, []);
 
     const handleAddTags = (newChip: string) => {
         setInputTags(prev => [...prev, newChip]);
@@ -42,10 +37,6 @@ const Search: FC = () => {
     const handleDeleteTags = (deleteChip: string) => {
         setInputTags(prev => prev.filter((chip) => chip !== deleteChip));
     }
-
-    useEffect(() => {
-        console.log(searchedPosts);
-    }, [searchedPosts]);
 
     return (
         <section className='justify-center h-full p-4 my-6 transition duration-500 bg-white rounded-md shadow-2xl hover:-translate-y-3'>
