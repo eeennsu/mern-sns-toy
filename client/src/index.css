@@ -26,3 +26,23 @@ body {
 ::-webkit-scrollbar-track {
   background-color: transparent;
 }
+
+.custom-chip-input {
+  width: 100%;
+  color: #000;
+  border: 1px solid #ccc;
+  border-radius: 0.125rem; /* Tailwind의 'rounded-sm' 클래스를 대체 */
+  outline: none;
+  background: inherit;
+  transition: border-color 0.15s ease-in-out; /* 포커스 시 border 색상 변화 효과 */
+  padding: 0.25rem 0.5rem; /* 커스텀 패딩 값, 필요에 따라 조절하세요 */
+}
+
+.custom-chip-input::placeholder {
+  font-size: 0.75rem; /* Tailwind의 'text-xs' 클래스를 대체 */
+  color: rgba(128, 128, 128, 0.8); /* Tailwind의 'text-gray-400/80' 클래스를 대체 */
+}
+
+.custom-chip-input:focus {
+  border-color: #000; /* 포커스 시 border 색상 변경 */
+}

@@ -1,58 +1,38 @@
 import type { FC } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../redux/actionTypes';
-import { shallowEqual } from 'react-redux';
-import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs';
-import { changePage } from '../../../actions/page';
-import { ArrowButton, PageButton, Spin } from '../..';
+import usePageination, { UsePaginationProps } from '../../../hooks/usePagination';
+import { AiOutlineEllipsis } from 'react-icons/ai';
+import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
+import PageButton from './PageButton';
+ 
+const Pagination2: FC<UsePaginationProps> = ({ count, onPageChange, page, boundaryCount, disabled, siblingCount }) => {
+    
+    const getLabel = (item: number | string) => {
+        switch(typeof item) {
+            case 'number': return item;
+            case 'string':
+                if (item.indexOf('ellipsis')  > -1) return <AiOutlineEllipsis />
+                else if (item.indexOf('prev') > -1) return <GrFormPrevious />
+                else if (item.indexOf('next') > -1) return <GrFormNext />
+        }
+    };
 
-type Props = {
-
-}
-
-const Pagination: FC<Props> = ({  }) => {
-
-    const dispatch = useAppDispatch();
-    const { curPage, totalCount, isPageLoading, isPageError } = useAppSelector(state => ({
-        curPage: state.page.curPage,
-        totalCount: state.page.totalCount,
-        isPageLoading: state.page.isPageLoading,
-        isPageError: state.page.isPageError
-    }), shallowEqual);
-
-    const handleNextPage = () => {
-        const changeDispatch = changePage(curPage, 1);
-
-        changeDispatch(dispatch);
-    }
-
-    const handlePrevPage = () => {
-        const changeDispatch = changePage(curPage, -1);
-
-        changeDispatch(dispatch);
-    }
-
-    const isFirstPage = curPage === 1;
-    const isLastPage = curPage >= totalCount / 4;
-    const pagesNumber = Array.from({ length: Math.ceil(totalCount / 4)}, (_, i) => i + 1);
+    const { items } = usePageination({ count, onPageChange, page, boundaryCount, disabled, siblingCount });
 
     return (
-        <section className={`relative px-4 py-4 mt-6 bg-white rounded-md shadow-md ${isPageLoading && 'bg-gray-100/60 aboslute inset-0 z-10'}`}>
-           <nav role='pagination' className='flex justify-between w-full'>
-                <ArrowButton onClick={handlePrevPage} disabled={isFirstPage || isPageLoading} trigger={isFirstPage}>
-                    &lt;
-                </ArrowButton>               
-                {
-                    pagesNumber.map((num) => (
-                        <PageButton key={num} num={num} />
-                    ))
-                }
-                <ArrowButton onClick={handleNextPage} disabled={isLastPage || isPageLoading} trigger={isLastPage}>
-                    &gt;
-                </ArrowButton>                
-            </nav>        
-        </section>
+        <nav role='pagination'>
+            <ul className='flex justify-between'>
+                {items.map(({ key, disabled, onClick, selected, item }) => (
+                    <li key={key} >
+                        <PageButton onClick={onClick} selected={selected} disabled={disabled}>
+                            {getLabel(item)}
+                        </PageButton>
+                        {/* <Button onClick={onClick} selected={selected} disabled={disabled}>{getLabel(item)}</Button> */}
+                    </li>
+                ))}
+            </ul>
+        </nav>
         
     );
 };
 
-export default Pagination;
+export default Pagination2;

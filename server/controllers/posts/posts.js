@@ -21,10 +21,10 @@ const getPagePosts = async (req, res) => {
 
     // page parameter를 통해 가져오는 방법
 
-    const curPage = parseInt(req.query.curPage) || 1;
-
+    const curPage = parseInt(req.query.curPage);
+    console.log(curPage);
     const perPage = 4;
-    const skip = (curPage - 1) * perPage;
+    const skip = (Number(curPage) - 1) * perPage;
 
     try {
         const pagePosts = await PostMessage.find().sort({ createdAt: -1 }).skip(skip).limit(perPage);
@@ -69,7 +69,7 @@ const getPostsBySearch = async (req, res) => {
 
     try {
         const title = new RegExp(searchQuery, 'i');             // i 플래그는 대소문자를 무시하도록 설정
-        
+       
         const posts = await PostMessage.find({
             $or: [
                 { title },

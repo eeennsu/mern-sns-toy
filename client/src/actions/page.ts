@@ -1,14 +1,12 @@
 import { RootDispatch } from '../redux/actionTypes'; 
 import { getPosts } from './posts';
 
-export const changePage = (curPage: number = 1, changeValue: number) => async (dispatch: RootDispatch) => {
+export const changePage = (chagedPage: number) => async (dispatch: RootDispatch) => {
     dispatch({ type: 'IS_PAGE_LOADING', payload: true });
 
-    const changedPage = curPage + changeValue;
+    dispatch({ type: 'CHANGE_CUR_PAGE', payload: chagedPage });
 
-    dispatch({ type: 'CHANGE_CUR_PAGE', payload: changedPage });
-
-    const getPostsDispatch = getPosts(changedPage);
+    const getPostsDispatch = getPosts(chagedPage);
     await getPostsDispatch(dispatch);
     
     dispatch({ type: 'IS_PAGE_LOADING', payload: false });

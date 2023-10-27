@@ -10,6 +10,7 @@ export const getPosts = (curPage: number) => async (dispatch: RootDispatch) => {
         dispatch({ type: 'UPDATE_TOTAL_POSTS_COUNT', payload: data.totalCount })
         dispatch({ type: 'SEARCH_POSTS', payload: [] });
         dispatch({ type: 'IS_LOADING_API_POST', payload: false });
+
     } catch (error) {
         console.log(error);
     }
@@ -17,6 +18,7 @@ export const getPosts = (curPage: number) => async (dispatch: RootDispatch) => {
 
 export const searchPosts = (title: string, tags: string) => async (dispatch: RootDispatch) => {
     try {
+        dispatch({ type: 'SEARCH_POSTS', payload: [] });            // 이전 검색 기록이 있으면 초기화
         dispatch({ type: 'IS_LOADING_API_POST', payload: true });
         const { data } = await searchPosts_API(title, tags);
         dispatch({ type: 'GET_POSTS', payload: [] });

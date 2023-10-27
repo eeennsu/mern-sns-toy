@@ -12,17 +12,16 @@ import { useEffect } from 'react';
 
 const Header: FC = () => {
 
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const dispatch = useAppDispatch();
     const { isLogin, role, email, imgUrl } = useAppSelector(state => ({
         isLogin: state.user.isLogin,
         role: state.user.role,
         email: state.user.email,
         imgUrl: state.user.imgUrl
-    }), shallowEqual);
-    
-    const location = useLocation();
-
-    const navigate = useNavigate();
+    }), shallowEqual); 
 
     const handleLoginPage = () => {
         navigate('/login');
@@ -31,9 +30,7 @@ const Header: FC = () => {
     const handleHomePage = () => {
         const path = location.pathname;
         
-        path === '/' && window.location.reload();
-        
-        navigate('/');
+        path === '/' ? navigate(0) : navigate('/');
     }
 
     const handleLogout = async (auto: boolean = false) => {

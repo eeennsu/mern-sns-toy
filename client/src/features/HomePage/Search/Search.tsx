@@ -1,10 +1,11 @@
-import type { FC, FormEvent, ChangeEvent } from 'react';
+import type { FC, FormEvent, ChangeEvent, CSSProperties  } from 'react';
 import { Button2, Input } from '../../../components';
 import { useState, useCallback, useEffect } from 'react';
-import { message } from 'antd';
+import message from 'antd/es/message';
 import { searchPosts } from '../../../actions/posts';
 import { useAppDispatch, useAppSelector } from '../../../redux/actionTypes';
 import { shallowEqual } from 'react-redux';
+import ChipInput from 'material-ui-chip-input';
 
 const Search: FC = () => {
 
@@ -15,7 +16,7 @@ const Search: FC = () => {
     }), shallowEqual);
 
     const [inputTitle, setInputTitle] = useState<string>('');
-    const [inputTags, setInputTags] = useState<string>('');
+    const [inputTags, setInputTags] = useState<string[]>([]);
 
     const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -25,7 +26,7 @@ const Search: FC = () => {
             return;
         }
 
-        const searchDispatch = searchPosts(inputTitle.trim(), inputTags.trim());
+        const searchDispatch = searchPosts(inputTitle.trim(), inputTags.join(','));
         
         await searchDispatch(dispatch);
     }
@@ -34,9 +35,13 @@ const Search: FC = () => {
         setInputTitle(e.target.value)
     }, [inputTitle]);
 
-    const handleChangeTags = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setInputTags(e.target.value)
-    }, [inputTags]);
+    const handleAddTags = (newChip: string) => {
+        setInputTags(prev => [...prev, newChip]);
+    }
+
+    const handleDeleteTags = (deleteChip: string) => {
+        setInputTags(prev => prev.filter((chip) => chip !== deleteChip));
+    }
 
     useEffect(() => {
         console.log(searchedPosts);
@@ -49,7 +54,8 @@ const Search: FC = () => {
                     <Input value={inputTitle} onChange={handleChangeTitle} placeholder='Search Post'/>
                 </div>
                 <div>
-                    <Input value={inputTags} onChange={handleChangeTags} placeholder='Search Tags'/>
+                    {/* <Input value={inputTags} onChange={handleChangeTags} placeholder='Search Tags'/> */}
+                    <ChipInput className='w-full' style={{ paddingInline: '8px' }} value={inputTags} onAdd={handleAddTags} onDelete={handleDeleteTags} placeholder='Search Tags' />
                 </div>
                 <Button2 type='submit' className='bg-blue-800'>
                     search

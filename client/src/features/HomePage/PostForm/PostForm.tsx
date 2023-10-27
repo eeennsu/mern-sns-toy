@@ -6,6 +6,7 @@ import { createPost, updatePost } from '../../../actions/posts';
 import { message as antdMessage } from 'antd';
 import { shallowEqual } from 'react-redux';
 import { Button2, Input } from '../../../components';
+import { useNavigate } from 'react-router-dom';
 
 const initForm: PostFormData = {
     title: '',
@@ -16,6 +17,7 @@ const initForm: PostFormData = {
 
 const Form: FC = () => {
 
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { selectedPost, email } = useAppSelector(state => ({
         selectedPost: state.posts.selectedPost,
@@ -26,7 +28,7 @@ const Form: FC = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        dispatch({ type: 'IS_LOADING_API_POST', payload: true });
+        // dispatch({ type: 'IS_LOADING_API_POST', payload: true });
 
         const { message, selectedFile, tags, title } = formData;
         
@@ -61,8 +63,11 @@ const Form: FC = () => {
         }    
 
         // 폼 리셋
-        dispatch({ type: 'IS_LOADING_API_POST', payload: false });
+        // dispatch({ type: 'IS_LOADING_API_POST', payload: false });
         handleFormReset(); 
+
+        // 새로 고침
+        navigate(0);
     }
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
