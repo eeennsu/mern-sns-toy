@@ -8,7 +8,7 @@ type Props = {
 const RelatedPost: FC<Props> = ({ post, onClick }) => {
 
     return (
-        <div className='flex flex-col p-4 rounded-md shadow-md cursor-pointer gap-y-4 bg-sky-100 hover:shadow-xl' onClick={onClick}>
+        <div className='flex flex-col p-4 bg-orange-200 rounded-md shadow-md cursor-pointer gap-y-4 hover:shadow-xl' onClick={onClick}>
             <h3 className='text-2xl font-bold'>
                 {post.title}
             </h3>

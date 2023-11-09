@@ -1,14 +1,14 @@
 import type { FC } from 'react';
 import { useAppDispatch, useAppSelector } from '../redux/actionTypes';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { getPosts } from '../actions/posts';
-import { Spin } from '../components';
-import { LoginPlease, PostForm, Posts, Search, Side } from '../features/index';
+import { Posts, Side } from '../features/index';
+import { createBrowserHistory } from 'history';
 
 const HomePage: FC = () => {
 
     const dispatch = useAppDispatch();
-    const isLoadingPost = useAppSelector(state => state.posts.isLoadingPost);
+    const history = createBrowserHistory();
     const curPage = useAppSelector(state => state.page.curPage);   
 
     useEffect(() => {        
@@ -19,6 +19,14 @@ const HomePage: FC = () => {
         getPostsDispatch(dispatch);
     }, [dispatch]);
     
+    useEffect(() => {
+        history.listen(() => {
+            if (history.action === 'POP') {
+                dispatch({ type: 'RESET_ALL_POSTS_SUB_INFOS', payload: null });
+            }
+        })
+    }, [history]);
+
     return (
         <section className='relative flex flex-col-reverse items-center flex-1 pt-6 md:pt-12 md:items-start md:flex-row justify-beteen'>
             {/* {

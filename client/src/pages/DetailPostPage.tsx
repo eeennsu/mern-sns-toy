@@ -6,6 +6,7 @@ import { Divider, Spin } from '../components';
 import { Message, Tag, Title, Image, RelatedPosts } from '../features';
 import { searchPosts } from '../actions/posts';
 import { useAppDispatch } from '../redux/actionTypes';
+import Comments from '../features/DetailPostPage/Comments/Comments';
 
 const DetailPostPage: FC = () => {
 
@@ -16,7 +17,7 @@ const DetailPostPage: FC = () => {
 
     useEffect(() => {
         id && getOnePost_API(id)
-            .then(data => setPost(data.data))
+            .then(res => setPost(res.data))
             .catch(err => console.log(err));
     }, [id]);    
 
@@ -34,7 +35,7 @@ const DetailPostPage: FC = () => {
                 !post ? (
                     <Spin />
                 ) : (      
-                    <>
+                    <article>
                         <section className='flex flex-col-reverse gap-4 md:flex-row'>        
                             <div className='flex flex-col'>
                                 <Title>
@@ -51,22 +52,15 @@ const DetailPostPage: FC = () => {
                                     {post.message} Lorem ipsum dolor, sit amet consectetur adipisicing elit. Animi ex maiores nemo tempore commodi labore velit iure provident consequatur et deleniti earum odit, voluptates aperiam libero illo laudantium, itaque veniam.
                                 </Message>
                                 <Divider />
-                                <p className='mt-4'>
-                                    <span className='mr-3 font-bold'>Realtime Chat</span>
-                                    <span>coming soon!</span>
-                                </p>
+                                <Comments comments={post.comments} />
                                 <Divider />
-                                <p className='mt-4'>
-                                    <span className='mr-3 font-bold'>Comments</span>
-                                    <span>coming soon!</span>
-                                </p>
                             </div>               
                             <Image src={post.selectedFile}/>             
                         </section>     
                         <section className='mt-10'>
                             <RelatedPosts id={post._id}/>
                         </section>  
-                    </>                                
+                    </article>                                
                 )
             }
         </div>

@@ -1,12 +1,12 @@
 import type { FC, FormEvent, ChangeEvent } from 'react';
 import { useState, useEffect } from 'react';
-import FileBase from 'react-file-base64';
 import { useAppDispatch, useAppSelector } from '../../../redux/actionTypes';
 import { createPost, updatePost } from '../../../actions/posts';
 import { message as antdMessage } from 'antd';
 import { shallowEqual } from 'react-redux';
 import { Button2, Input } from '../../../components';
 import { useNavigate } from 'react-router-dom';
+import FileBase from 'react-file-base64';
 
 const initForm: PostFormData = {
     title: '',

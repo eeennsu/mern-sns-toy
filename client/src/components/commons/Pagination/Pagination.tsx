@@ -1,8 +1,8 @@
 import type { FC } from 'react';
 import usePageination, { UsePaginationProps } from '../../../hooks/usePagination';
-import { AiOutlineEllipsis } from 'react-icons/ai';
-import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 import PageButton from './PageButton';
+import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
+import { AiOutlineEllipsis } from 'react-icons/ai';
  
 const Pagination2: FC<UsePaginationProps> = ({ count, onPageChange, page, boundaryCount, disabled, siblingCount }) => {
     
@@ -21,14 +21,16 @@ const Pagination2: FC<UsePaginationProps> = ({ count, onPageChange, page, bounda
     return (
         <nav role='pagination'>
             <ul className='flex justify-between'>
-                {items.map(({ key, disabled, onClick, selected, item }) => (
-                    <li key={key} >
-                        <PageButton onClick={onClick} selected={selected} disabled={disabled}>
-                            {getLabel(item)}
-                        </PageButton>
-                        {/* <Button onClick={onClick} selected={selected} disabled={disabled}>{getLabel(item)}</Button> */}
-                    </li>
-                ))}
+                {
+                    items.map(({ key, disabled, onClick, selected, item }) => (
+                        <li key={key} >
+                            <PageButton onClick={onClick} selected={selected} disabled={disabled}>
+                                {getLabel(item)}
+                            </PageButton>
+                            {/* <Button onClick={onClick} selected={selected} disabled={disabled}>{getLabel(item)}</Button> */}
+                        </li>
+                    ))
+                }
             </ul>
         </nav>
         

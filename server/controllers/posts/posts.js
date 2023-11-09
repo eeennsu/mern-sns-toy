@@ -22,7 +22,6 @@ const getPagePosts = async (req, res) => {
     // page parameter를 통해 가져오는 방법
 
     const curPage = parseInt(req.query.curPage);
-    console.log(curPage);
     const perPage = 4;
     const skip = (Number(curPage) - 1) * perPage;
 
@@ -69,7 +68,7 @@ const getPostsBySearch = async (req, res) => {
 
     try {
         const title = new RegExp(searchQuery, 'i');             // i 플래그는 대소문자를 무시하도록 설정
-       
+        console.log('title ', title);
         const posts = await PostMessage.find({
             $or: [
                 { title },
@@ -78,7 +77,7 @@ const getPostsBySearch = async (req, res) => {
                 }}
             ]
         });
-
+        console.log('검색 posts', posts);
         res.status(200).json({ posts });
         
     } catch (error) {
@@ -156,7 +155,6 @@ const deletePost = async (req, res) => {
 }
 
 const likePost = async (req, res) => {
-    console.log('like ?');
     const { id: _id } = req.params;
     
     if (!mongoose.Types.ObjectId.isValid(_id)) {
@@ -166,7 +164,8 @@ const likePost = async (req, res) => {
     try {
         // 먼저 기존에 좋아요를 눌렀는지 확인
         const foundPost = await PostMessage.findById(_id);  
-        const existLikeUser = foundPost.likes.findIndex((email) => email === String(req.email));    
+        const existLikeUser = foundPost.likes.findIndex((email) => email === String(req.email));   
+        console.log('req.email', req.email); 
         
         if (existLikeUser === -1) {
             foundPost.likes.push(req.email);
@@ -183,11 +182,37 @@ const likePost = async (req, res) => {
     }
 }
 
+const submitComment = async (req, res) => {
+    const { id: _id } = req.params;
+    const { comment } = req.body;
+    
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(404).json({ "message": "Invalid id" });
+    }
+    
+    if (!comment) {
+        return res.status(400).json({ "message": "Not found user's comment." });
+    }
+
+    try {
+        const foundPost = await PostMessage.findById(_id);
+        
+        foundPost.comments.push(comment);
+
+        const updatedPost = await PostMessage.findByIdAndUpdate(_id, foundPost, { new: true });
+
+        res.status(200).json(updatedPost);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ "message": error.message });
+    }
+}
+
 export {
     getPagePosts,
     getOnePost,
     getPostsBySearch,
-
+    submitComment,
     createPost,
     updatePost,
     deletePost,

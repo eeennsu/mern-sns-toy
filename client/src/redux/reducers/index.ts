@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
+import { persistReducer } from 'redux-persist';
 import postsReducer from './postsReducer';
 import userReducer from './userReducer';
-import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import pageReducer from './pageReducer';
 

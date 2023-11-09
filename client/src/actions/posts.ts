@@ -1,4 +1,4 @@
-import { createPost_API, deletePost_API, getPosts_API, plusLikePost_API, searchPosts_API, updatePost_API } from '../api/postsApis';
+import { createPost_API, deletePost_API, getPosts_API, plusLikePost_API, searchPosts_API, submitComment_API, updatePost_API } from '../api/postsApis';
 import { RootDispatch } from '../redux/actionTypes'; 
 
 // 액션생성자는 액션을 반환하는 함수이다
@@ -8,7 +8,6 @@ export const getPosts = (curPage: number) => async (dispatch: RootDispatch) => {
         const { data } = await getPosts_API(curPage);
         dispatch({ type: 'GET_POSTS', payload: data.pagePosts });
         dispatch({ type: 'UPDATE_TOTAL_POSTS_COUNT', payload: data.totalCount })
-        dispatch({ type: 'SEARCH_POSTS', payload: [] });
         dispatch({ type: 'IS_LOADING_API_POST', payload: false });
 
     } catch (error) {
@@ -67,6 +66,18 @@ export const plusLiketPost = (id: string) => async (dispatch: RootDispatch) => {
         const { data } = await plusLikePost_API(id);
 
         dispatch({ type: 'PLUS_LIKE_POST', payload: { id, post: data } });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const submitComment = (id: string, value: string) => async (dispatch: RootDispatch) => {
+    try {
+        const { data } = await submitComment_API(id, value);
+
+        dispatch({ type: 'SUBMIT_COMMENT', payload: data });
+
+        return data;
     } catch (error) {
         console.log(error);
     }

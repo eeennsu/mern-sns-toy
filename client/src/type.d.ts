@@ -10,6 +10,7 @@ type Post = PostFormData & {
     creator: string;
     likes: string[];
     createdAt: Date | string;
+    comments: string[];
 }
 
 type UserLoginFormType = {

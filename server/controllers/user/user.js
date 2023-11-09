@@ -31,8 +31,6 @@ const signUp = async (req, res) => {
             password: hashedPassword
         });
 
-        console.log(result);
-
         // 201은 정보 추가 성공 상태
         res.status(201).json({ "suc": true, "message": "User created successfully.", email });
     } catch (error) {

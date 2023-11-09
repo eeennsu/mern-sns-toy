@@ -8,6 +8,8 @@ const Side: FC = () => {
     const isLogin = useAppSelector(state => state.user.isLogin);
     const searchedPosts = useAppSelector(state => state.posts.searchedPosts);
 
+    console.log('searchedPosts', searchedPosts);
+
     return (
         <aside className=' w-80'>     
             <Search />       
@@ -18,7 +20,7 @@ const Side: FC = () => {
                     <LoginPlease />
                 )
             }              
-            {!searchedPosts.length && <PostPagenation />}       
+            {(searchedPosts && searchedPosts.length <= 0) && <PostPagenation />}       
         </aside>   
     );
 };

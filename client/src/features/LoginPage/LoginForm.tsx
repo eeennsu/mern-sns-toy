@@ -58,7 +58,7 @@ const LoginForm: FC = () => {
     }
 
     const handleSignUpPage = () => {
-        searchedPosts.length >= 1 && dispatch({ type: 'SEARCH_POSTS', payload: [] })
+        dispatch({ type: 'RESET_ALL_POSTS_SUB_INFOS', payload: null })
         navigate('/signUp');
     }
 

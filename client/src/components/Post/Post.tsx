@@ -1,13 +1,13 @@
+import type { FC } from 'react';
 import { Tag, message } from 'antd';
 import { IoMdMore } from 'react-icons/io';
-import type { FC } from 'react';
 import { BiSolidLike, BiTrash } from 'react-icons/bi';
-import formatRelativeTime from '../../utils/formatRelativeTime';
 import { useMemo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/actionTypes';
 import { deletePost, plusLiketPost } from '../../actions/posts';
 import { shallowEqual } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import formatRelativeTime from '../../utils/formatRelativeTime';
 
 type Props = {
     post: Post;
@@ -78,7 +78,7 @@ const Post: FC<Props> = ({ post }) => {
     }
     
     return (
-        <div onClick={handleDetailPostPage} className='transition bg-white cursor-pointer card w-80 shadow-post-card group'>
+        <div className='transition bg-white cursor-pointer card w-80 shadow-post-card group'>
             <figure className='relative inset-0'>
                 <div className='absolute left-0 z-20 flex flex-col justify-center w-full px-5 top-4'>
                     <div className='flex justify-between'>
@@ -97,24 +97,26 @@ const Post: FC<Props> = ({ post }) => {
                 <img src={post.selectedFile || 'https://picsum.photos/320/180'} className='object-cover w-[320px] h-[156px] transition duration-300 group-hover:scale-110' alt="image" />
             </figure>
             <div className="flex flex-col px-3 py-1">
-                <p className='my-2 text-sm text-slate-600'>
-                    {
-                        tags.map((tag, i) => (
-                            <Tag key={`${i}-${tag}`} color={colors[Math.floor(Math.random() * colors.length)]}>
-                                {tag}
-                            </Tag>
-                        ))
-                    }
-                </p>
-                <h2 className="text-2xl font-bold capitalize text-slate-800 space">
-                    {post.title}                   
-                </h2>
-                <p className='mt-5 text-sm text-gray-500 line-clamp-3 text-slate min-h-[88px]'>
-                    {post.message} 
-                </p>
+                <div onClick={handleDetailPostPage} >
+                    <p className='my-2 text-sm text-slate-600'>
+                        {
+                            tags.map((tag, i) => (
+                                <Tag key={`${i}-${tag}`} color={colors[Math.floor(Math.random() * colors.length)]}>
+                                    {tag}
+                                </Tag>
+                            ))
+                        }
+                    </p>
+                    <h2 className="text-2xl font-bold capitalize text-slate-800 space">
+                        {post.title}                   
+                    </h2>
+                    <p className='mt-5 text-sm text-gray-500 line-clamp-3 text-slate min-h-[88px]'>
+                        {post.message} 
+                    </p>                  
+                </div>     
                 <div className='flex justify-between mt-4 mb-1.5'>
-                    <div>
-                        <button onClick={handleLike} className={`flex items-center justify-center gap-1 ${(isLogin && isLikedUser) ? 'text-blue-500' : 'text-gray-400'} px-2.5 py-1.5 ${(isLogin && isLikedUser) && 'transition-colors duration-200 active:bg-gray-400/50 hover:bg-gray-400/25 hover:text-blue-800'} rounded-3xl `}>
+                    <div className='hover:font-extrabold'>
+                        <button onClick={handleLike} className={`z-10 flex items-center justify-center gap-1 ${(isLogin && isLikedUser) ? 'text-blue-500' : 'text-gray-400'} px-2.5 py-1.5 ${(isLogin && isLikedUser) && 'transition-colors duration-200 active:bg-gray-400/50 hover:bg-gray-400/25 hover:text-blue-800'} rounded-3xl `}>
                             <BiSolidLike />
                             <span className='w-full'>
                                 {
@@ -133,7 +135,7 @@ const Post: FC<Props> = ({ post }) => {
                             </span>                            
                         </button>
                     </div>
-                </div>
+                </div>         
             </div>
         </div>
     );

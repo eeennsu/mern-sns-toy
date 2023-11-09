@@ -3,14 +3,14 @@ import { PostsAction } from "../actionTypes/postsActionsTypes";
 type PostsStateType = {
     isLoadingPost: boolean;
     posts: Post[];
-    searchedPosts: Post[];
+    searchedPosts?: Post[] | null;
     selectedPost?: Post | null;
 }
 
 const initialState: PostsStateType = {
     isLoadingPost: false,
     posts: [],
-    searchedPosts: [],
+    searchedPosts: null,
     selectedPost: null,
 }
 
@@ -69,14 +69,37 @@ const postsReducer = (state: PostsStateType = initialState, { type, payload }: P
             return {
                 ...state,
                 searchedPosts: payload
-            }
+            };
 
         case 'SELECT_POST_ID':         
             return {
                 ...state,
                 selectedPost: state.posts.find((post) => post._id === payload)
             };
-            
+
+        case 'SUBMIT_COMMENT':
+            return {
+                ...state,
+                posts: state.posts.map((post) => {
+                    if (post._id === payload._id) {
+                        return {
+                            ...post,
+                            comments: payload.comments
+                        };
+                    }
+
+                    return post;
+                })
+            };
+
+        case 'RESET_ALL_POSTS_SUB_INFOS':
+            return {
+                ...state,
+                isLoadingPost: false,
+                searchedPosts: null,
+                selectedPost: null
+            };
+
         default: 
             return state;
     }

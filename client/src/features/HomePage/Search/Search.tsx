@@ -1,10 +1,10 @@
 import type { FC, FormEvent, ChangeEvent  } from 'react';
 import { Button2, Input } from '../../../components';
 import { useState, useCallback } from 'react';
-import message from 'antd/es/message';
 import { searchPosts } from '../../../actions/posts';
 import { useAppDispatch } from '../../../redux/actionTypes';
 import ChipInput from 'material-ui-chip-input';
+import message from 'antd/es/message';
 
 const Search: FC = () => {
 
@@ -15,13 +15,13 @@ const Search: FC = () => {
 
     const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
-        if (!inputTitle && !inputTags) {
+     
+        if (inputTitle.length <= 0 && inputTags.length <= 0) {
             message.warning('Please enter title or tags.');
             return;
         }
 
-        const searchDispatch = searchPosts('totototototo', inputTags.join(','));
+        const searchDispatch = searchPosts(inputTitle.trim(), inputTags.join(','));
         
         await searchDispatch(dispatch);
     }

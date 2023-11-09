@@ -16,3 +16,5 @@ export const searchPosts_API = (title: string, tags: string) => axiosInst.get<{ 
     searchQuery: title,
     tags
 }});
+
+export const submitComment_API = (id: string, value: string) => axiosInst.post<Post>(`/posts/${id}/submitComment`, { comment: value });

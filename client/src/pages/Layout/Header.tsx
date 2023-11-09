@@ -7,8 +7,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Avatar, message } from 'antd';
 import { shallowEqual } from 'react-redux';
 import { userLogout } from '../../actions/user';
-import decode from 'jwt-decode';
 import { useEffect } from 'react';
+import decode from 'jwt-decode';
 
 const Header: FC = () => {
 
@@ -25,12 +25,12 @@ const Header: FC = () => {
     }), shallowEqual); 
 
     const handleLoginPage = () => {
-        searchedPosts.length >= 1 && dispatch({ type: 'SEARCH_POSTS', payload: [] });
+        dispatch({ type: 'RESET_ALL_POSTS_SUB_INFOS', payload: null });
         navigate('/login');
     }
 
     const handleHomePage = () => {
-        searchedPosts.length >= 1 && dispatch({ type: 'SEARCH_POSTS', payload: [] });
+        dispatch({ type: 'RESET_ALL_POSTS_SUB_INFOS', payload: null });
         const path = location.pathname;
     
         path === '/' ? navigate(0) : navigate('/');

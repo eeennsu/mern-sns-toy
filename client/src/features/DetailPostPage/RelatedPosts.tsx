@@ -31,10 +31,10 @@ const RelatedPosts: FC<Props> = ({ id }) => {
                 {
                     isLoadingPost ? (
                         <Spin />
-                    ) : (searchedPosts.length === 1) ? (
+                    ) : (searchedPosts?.length === 1) ? (
                         'Not related posts.'
                     ) : (
-                        searchedPosts.filter(post => post._id !== id).map(post => (
+                        searchedPosts?.filter(post => post._id !== id).map(post => (
                             <RelatedPost key={post._id} post={post} onClick={handleRelatedPostGo} />
                         )) 
                     )
