@@ -10,9 +10,9 @@ export const updatePost_API = (id: string, updatedForm: PostFormData) => axiosIn
 
 export const deletePost_API = (id: string) => axiosInst.delete(`/posts/${id}`);
 
-export const plusLikePost_API = (id: string) => axiosInst.patch<Post>(`/posts/${id}/likePost`);
+export const plusLikePost_API = (id: string, googleEmail?: string) => axiosInst.patch<Post>(`/posts/${id}/likePost`, { googleEmail });
 
-export const searchPosts_API = (title: string, tags: string) => axiosInst.get<{ posts: Post[], totalCount: number }>(`/posts/search`, { params: {
+export const searchPosts_API = (title: string, tags: string) => axiosInst.get<{ posts: Post[], totalCount: number }>('/posts/search', { params: {
     searchQuery: title,
     tags
 }});

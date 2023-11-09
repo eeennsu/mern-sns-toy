@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { getGoogleInfo_API, login_API } from '../api/userApis';
 import { RootDispatch } from '../redux/actionTypes';
 
@@ -66,3 +67,14 @@ export const userLogout = () => async (dispatch: RootDispatch) => {
 //         console.log(error);
 //     }
 // }
+
+export const getGoogleUserInfo = async (access_token: string) => {    
+
+    const { data } = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo', {
+        headers: {
+            'Authorization': `Bearer ${access_token}`
+        }
+    });
+
+    return data.email;
+}

@@ -61,9 +61,9 @@ export const deletePost = (id: string) => async (dispatch: RootDispatch) => {
     }
 }
 
-export const plusLiketPost = (id: string) => async (dispatch: RootDispatch) => {
+export const plusLiketPost = (id: string, googleEmail?: string) => async (dispatch: RootDispatch) => {
     try {
-        const { data } = await plusLikePost_API(id);
+        const { data } = await plusLikePost_API(id, googleEmail);
 
         dispatch({ type: 'PLUS_LIKE_POST', payload: { id, post: data } });
     } catch (error) {

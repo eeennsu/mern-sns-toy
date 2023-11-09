@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv';
 dotenv.config();
+
 const JWTSecretKey = process.env.JWT_LOGIN_SECRET_KEY;
 
 const signUp = async (req, res) => {

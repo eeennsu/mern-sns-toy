@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/actionTypes';
 import { deletePost, plusLiketPost } from '../../actions/posts';
 import { shallowEqual } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { getGoogleUserInfo } from '../../actions/user';
 import formatRelativeTime from '../../utils/formatRelativeTime';
 
 type Props = {
@@ -19,18 +20,18 @@ const Post: FC<Props> = ({ post }) => {
     
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { isLogin, email, googleResponse } = useAppSelector(state => ({
+    const { isLogin, email } = useAppSelector(state => ({
         isLogin: state.user.isLogin,
         email: state.user.email,
-        googleResponse: state.user.googleResponse
     }), shallowEqual);
 
     const tags = post.tags as string[];
     
-    const [isLikeLoading, setIsLikeLoading] = useState<boolean>();
     const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>();
-    const [isLikedUser, setIsLieUser] = useState<boolean>(Boolean(post.likes.find((likedUserEmail) => likedUserEmail === (email || googleResponse))));
+    const [likes, setLikes] = useState<string[]>(post.likes);
+    
     const isCurrentUserPost = email === post.creator;
+    const hasLikedPost = likes.find((like) => like === email);
 
     const relativeTimeFormat: string = useMemo(
         () => formatRelativeTime(new Date(post.createdAt)), 
@@ -40,12 +41,25 @@ const Post: FC<Props> = ({ post }) => {
     const handleLike = async () => {
         if (!isLoginCheck()) return;
 
-        setIsLikeLoading(true);
-        const updatePostDispatch = plusLiketPost(post._id);
+        if (hasLikedPost) {
+            setLikes(post.likes.filter((id) => id !== email));
+        } else {
+            setLikes(prev => [...prev, email!]);
+        }      
+        
+        const profile = JSON.parse(localStorage.getItem('profile') as string);
 
-        await updatePostDispatch(dispatch);
-        setIsLieUser(prev => !prev);
-        setIsLikeLoading(false);
+        if (profile) {     
+            const googleEmail = await getGoogleUserInfo(profile.access_token);
+
+            const updatePostDispatch = plusLiketPost(post._id, googleEmail);
+         
+            updatePostDispatch(dispatch);
+        } else {
+            const updatePostDispatch = plusLiketPost(post._id);
+
+            updatePostDispatch(dispatch);
+        }       
     }
 
     const handleEdit = () => {
@@ -116,11 +130,11 @@ const Post: FC<Props> = ({ post }) => {
                 </div>     
                 <div className='flex justify-between mt-4 mb-1.5'>
                     <div className='hover:font-extrabold'>
-                        <button onClick={handleLike} className={`z-10 flex items-center justify-center gap-1 ${(isLogin && isLikedUser) ? 'text-blue-500' : 'text-gray-400'} px-2.5 py-1.5 ${(isLogin && isLikedUser) && 'transition-colors duration-200 active:bg-gray-400/50 hover:bg-gray-400/25 hover:text-blue-800'} rounded-3xl `}>
+                        <button onClick={handleLike} className={`z-10 flex items-center justify-center gap-1 ${(isLogin && hasLikedPost) ? 'text-blue-500' : 'text-gray-400'} px-2.5 py-1.5 ${(isLogin && hasLikedPost) && 'transition-colors duration-200 active:bg-gray-400/50 hover:bg-gray-400/25 hover:text-blue-800'} rounded-3xl `}>
                             <BiSolidLike />
                             <span className='w-full'>
                                 {
-                                    isLikeLoading ? 'loading...' : `Like ${post.likes.length}`
+                                    `Like ${likes.length}`
                                 }
                             </span> 
                         </button>                                        

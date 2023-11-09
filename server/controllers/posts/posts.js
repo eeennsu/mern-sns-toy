@@ -165,7 +165,6 @@ const likePost = async (req, res) => {
         // 먼저 기존에 좋아요를 눌렀는지 확인
         const foundPost = await PostMessage.findById(_id);  
         const existLikeUser = foundPost.likes.findIndex((email) => email === String(req.email));   
-        console.log('req.email', req.email); 
         
         if (existLikeUser === -1) {
             foundPost.likes.push(req.email);
